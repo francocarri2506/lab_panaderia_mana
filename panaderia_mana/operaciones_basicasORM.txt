@@ -1,0 +1,12 @@
+crear insumos
+
+insumo1 = Insumo(nombre="harina x50kg", cantidad_disponible=20, cantidad_minima = 5)
+insumo1.save()
+insumo2 = Insumo(nombre="harina integral x50kg", cantidad_disponible=20, cantidad_minima = 5)
+insumo2.save()
+
+insumos = Insumo.objects.all()
+print(insumos)
+<QuerySet [<Insumo: harina x50kg>, <Insumo: harina integral x50kg>]>
+
+
