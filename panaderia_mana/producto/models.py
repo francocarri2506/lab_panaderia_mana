@@ -8,6 +8,7 @@ class Producto(models.Model):
     cantidadDisponible = models.IntegerField()
     unidadMedida = models.CharField(max_length=50)
     tipo = models.CharField(max_length=200)
+    imagen = models.FileField(default='default_image.jpg')
 
     def venta(self, cantidadVendida):
         if cantidadVendida <= self.cantidadDisponible:
@@ -23,12 +24,13 @@ class Producto(models.Model):
     def darBaja(self):
         self.delete()
 
-    def modificar(self, nombre, descripcion, precio, unidadMedida, tipo):
+    def modificar(self, nombre, descripcion, precio, unidadMedida, tipo,imagen ):
         self.nombre = nombre
         self.descripcion = descripcion
         self.precio = precio
         self.unidadMedida = unidadMedida
         self.tipo = tipo
+        self.imagen = imagen
 
         self.save()
 

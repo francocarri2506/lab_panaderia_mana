@@ -4,26 +4,28 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Lista de Insumos</title>
+    <title>Lista de Productos</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 </head>
 <body>
     <div class="container mt-5">
-        <h1>Insumos Disponibles</h1>
-        <a href="{% url 'agregar_insumo' %}" class="btn btn-primary mb-3">Agregar Insumo</a>
+        <h1>Productos Disponibles</h1>
+        <a href="{% url 'agregar_producto' %}" class="btn btn-primary mb-3">Agregar Producto</a>
         <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Cantidad Disponible</th>
+                    <th>Descripcion</th>
+                    <th>Precio</th>
                 </tr>
             </thead>
             <tbody>
-                {% for insumo in insumos %}
+                {% for producto in productos %}
                     <tr>
-                        <td>{{ insumo.nombre }}</td>
-                        <td>{{ insumo.cantidad_disponible }}</td>
-                        <td>{{ insumo.cantidad_minima }}</td>
+                        <td>{{ producto.nombre }}</td>
+                        <td>{{ producto.descripcion }}</td>
+                        <td>{{ producto.precio }}</td>
+
                     </tr>
                 {% empty %}
                     <tr>
