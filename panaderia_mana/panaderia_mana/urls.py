@@ -24,8 +24,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('insumos/', include('insumo.urls')),
     path('', views.pagina_inicio, name='pagina_inicio'),  # Ruta para la página de inicio
+    path('', include('apps.usuario.urls', namespace='usuario')),
 
-   # path('', views.index, name='index'),  # Ruta para la página de inicio
+    # path('', views.index, name='index'),  # Ruta para la página de inicio
     # path('registro-pedidos/', views.registro_pedidos, name='registro_pedidos'),  # Ruta para Registro de Pedidos
     #path('gestion-producto/', views.gestion_producto, name='gestion_producto'),  # Ruta para Gestión de Productos
     #path('ventas/', views.ventas, name='ventas'),  # Ruta para Ventas

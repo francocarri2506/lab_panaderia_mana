@@ -1,0 +1,52 @@
+/* un par de colores adicionales obtenidos de esta pagina https://coolors.co/palettes/trending*/
+
+
+/* para el laboratorio*/
+.marron{
+    background-color: #b88c64;
+}
+
+main, body{
+/* imagen antes
+    background-image: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url("/lab3/bg.jpg");
+   */
+    background-image: linear-gradient(rgba(47, 23, 15, 0.65), rgba(47, 23, 15, 0.65)), url("{% static 'img/bg.jpg' %}");
+    background-attachment: fixed;
+    background-position: center;
+    background-size: cover;
+  }
+
+  .text-marron{
+    color:#b88c64;
+}
+
+.marron_oscuro{
+    color: rgba(47, 23, 15, 0.65)
+
+}
+
+.marron-claro{
+    background-color: #f6e1c5;;
+}
+
+
+/*Rotación completa al pasar el mouse y ademas cambio de escala, es decir se hace mas grande*/
+
+header .logo img:hover {
+
+    transform: rotate(360deg) scale(1.2);
+}
+
+.div-footer a{
+
+    text-align: center;
+    color:white;
+}
+
+/*agregar negrita a los campos del formulario*/
+
+
+div.input-group span{
+
+    font-weight: bold;
+}

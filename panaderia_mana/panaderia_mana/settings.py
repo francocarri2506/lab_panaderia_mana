@@ -40,14 +40,13 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'insumo',
     'proveedor',
-    'usuario',
+    "apps.usuario",
     'venta',
     'producto',
     'pedido',
     'empleado',
     'cliente',
     'recepcion_pedido',
-
 
 ]
 
@@ -82,7 +81,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'panaderia_mana.wsgi.application'
 
-#AUTH_USER_MODEL = 'usuario.Usuario'
+AUTH_USER_MODEL = 'usuario.Usuario'
 
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
@@ -137,9 +136,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
 STATIC_URL = 'static/'
-STATICFILES_DIRS = [
-    BASE_DIR / "css",
-]
+#STATICFILES_DIRS = [
+#   BASE_DIR / "css",
+#]
+STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 
 
 # Especifica la ubicación física en el sistema de archivos donde se almacenan los archivos subidos por los usuarios.
