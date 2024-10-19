@@ -1,0 +1,24 @@
+
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Cliente Mayorista
+{% endblock %}
+
+{% block titulo %}
+    Crear Cliente Mayorista
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mb-1 container text-center">
+            <input type="reset" value="Cancelar" class="btn bg-danger">
+            <input type="submit" value="Registrar" class="btn bg-primary">
+        </div>
+    </form>
+
+<a href="{% url 'listar_clientes' %}">Cancelar</a>
+{% endblock %}

@@ -26,6 +26,8 @@ urlpatterns = [
     path('', views.pagina_inicio, name='pagina_inicio'),  # Ruta para la página de inicio
     path('', include('apps.usuario.urls', namespace='usuario')),
     path('productos/', include('producto.urls')),
+    path('empleado/', include('empleado.urls')),
+    path('cliente/', include('cliente.urls')),
 
     # path('', views.index, name='index'),  # Ruta para la página de inicio
     # path('registro-pedidos/', views.registro_pedidos, name='registro_pedidos'),  # Ruta para Registro de Pedidos

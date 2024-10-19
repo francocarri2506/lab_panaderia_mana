@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lsta de Clientes Mayoristas
+{% endblock %}
+
+{% block titulo %}
+    Lista de Clientes Mayoristas
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Cuit</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cliente in clientes %}
+                    <tr>
+                        <td>{{ cliente.nombreCompleto }}</td>
+                        <td>{{ cliente.cuit }}</td>
+                        <td> <a class="btn bg-primary" href="{% url 'editar_cliente' cliente.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_cliente' cliente.id %}">Eliminar</a></td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No hay clientes disponibles.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
