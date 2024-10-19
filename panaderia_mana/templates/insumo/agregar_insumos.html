@@ -1,4 +1,25 @@
-<!-- insumo/agregar_insumos.html -->
+{% extends 'base.html' %}
+
+{% block title %}
+    Agregar Insumo
+{% endblock %}
+
+{% block titulo %}
+    Gestion de Insumos
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </form>
+{% endblock %}
+
+
+
+
+<!-- insumo/agregar_insumos.html
 
 <!DOCTYPE html>
 <html lang="es">
@@ -19,3 +40,9 @@
     </div>
 </body>
 </html>
+-->
+<!-- insumo/agregar_insumo.html -->
+
+
+
+

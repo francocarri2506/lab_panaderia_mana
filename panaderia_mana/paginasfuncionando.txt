@@ -1,0 +1,14 @@
+
+http://127.0.0.1:8000
+
+PRODUCTOS:
+
+http://127.0.0.1:8000/productos/lista_productos/
+http://127.0.0.1:8000/productos/agregar_producto/
+
+INSUMOS:
+
+http://127.0.0.1:8000/insumos/agregar/
+http://127.0.0.1:8000/insumos/lista/
+
+
