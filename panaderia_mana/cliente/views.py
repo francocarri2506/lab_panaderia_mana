@@ -6,7 +6,7 @@ from .forms import ClienteMayoristaForm
 
 def listar_clientes(request):
     clientes = ClienteMayorista.objects.all()
-    return render(request, 'cliente/listar_usuario.html', {'clientes': clientes})
+    return render(request, 'cliente/listar_clientes.html', {'clientes': clientes})
 
 def crear_cliente(request):
     if request.method == 'POST':
@@ -16,7 +16,7 @@ def crear_cliente(request):
             return redirect('listar_clientes')
     else:
         form = ClienteMayoristaForm()
-    return render(request, 'cliente/crear_usuario.html', {'form': form})
+    return render(request, 'cliente/crear_cliente.html', {'form': form})
 
 def editar_cliente(request, cliente_id):
     cliente = get_object_or_404(ClienteMayorista, id=cliente_id)
@@ -27,7 +27,7 @@ def editar_cliente(request, cliente_id):
             return redirect('listar_clientes')
     else:
         form = ClienteMayoristaForm(instance=cliente)
-    return render(request, 'cliente/editar_usuario.html', {'form': form})
+    return render(request, 'cliente/editar_cliente.html', {'form': form, 'cliente': cliente})
 
 def eliminar_cliente(request, cliente_id):
     cliente = get_object_or_404(ClienteMayorista, id=cliente_id)

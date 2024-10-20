@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Lsta de Clientes Mayoristas
+    Lista de Usuarios
 {% endblock %}
 
 {% block titulo %}
-    Lista de Clientes Mayoristas
+    Lista de  Usuarios
 {% endblock %}
 
 {% block content %}
@@ -14,16 +14,13 @@
             <thead>
                 <tr>
                     <th>Nombre</th>
-                    <th>Cuit</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
-                {% for cliente in clientes %}
+                {% for usuario in usuarios %}
                     <tr>
-                        <td>{{ cliente.nombreCompleto }}</td>
-                        <td>{{ cliente.cuit }}</td>
-                        <td> <a class="btn bg-primary" href="{% url 'editar_cliente' cliente.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_cliente' cliente.id %}">Eliminar</a></td>
+                        <td>{{ usuario.username }}</td>
 
                     </tr>
                 {% empty %}
@@ -35,3 +32,4 @@
         </table>
     </div>
 {% endblock %}
+

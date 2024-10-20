@@ -1,7 +1,23 @@
-<h2>Editar Cliente Mayorista</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar Cambios</button>
-</form>
-<a href="{% url 'listar_clientes' %}">Cancelar</a>
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Editar Cliente Mayorista
+{% endblock %}
+
+{% block titulo %}
+    Editar: {{ cliente.nombreCompleto }}
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mb-1 container text-center">
+
+            <input type="submit" value="Guardar Cambios" class="btn bg-primary">
+            <a class="btn bg-danger" href="{% url 'listar_clientes' %}">Cancelar</a>
+        </div>
+    </form>
+{% endblock %}
+

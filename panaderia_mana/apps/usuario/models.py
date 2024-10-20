@@ -17,3 +17,4 @@ class Usuario(AbstractUser):
             return self.username
 
     obtener_nombre_completo.short_description = 'Nombre Completo'
+

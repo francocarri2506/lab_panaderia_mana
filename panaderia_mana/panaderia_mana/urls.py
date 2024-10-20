@@ -14,24 +14,28 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
+from django.conf import settings
+from django.conf.urls.static import static
+from django.views.generic import TemplateView
 from django.contrib import admin
 from django.urls import path, include
-
 from insumo import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('insumos/', include('insumo.urls')),
     path('', views.pagina_inicio, name='pagina_inicio'),  # Ruta para la página de inicio
-    path('', include('apps.usuario.urls', namespace='usuario')),
+    #path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
+    #path('', include('apps.usuario.urls', namespace='usuario')),
     path('productos/', include('producto.urls')),
     path('empleado/', include('empleado.urls')),
     path('cliente/', include('cliente.urls')),
+    path('usuario/', include('apps.usuario.urls')),
 
-    # path('', views.index, name='index'),  # Ruta para la página de inicio
+
+                  # path('', views.index, name='index'),  # Ruta para la página de inicio
     # path('registro-pedidos/', views.registro_pedidos, name='registro_pedidos'),  # Ruta para Registro de Pedidos
     #path('gestion-producto/', views.gestion_producto, name='gestion_producto'),  # Ruta para Gestión de Productos
     #path('ventas/', views.ventas, name='ventas'),  # Ruta para Ventas
 
-]
+]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

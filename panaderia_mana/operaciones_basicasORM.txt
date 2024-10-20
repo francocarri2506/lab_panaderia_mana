@@ -9,4 +9,6 @@ insumos = Insumo.objects.all()
 print(insumos)
 <QuerySet [<Insumo: harina x50kg>, <Insumo: harina integral x50kg>]>
 
+crear usuarios
 
+Usuario.objects.create(username="franco",password="12345")

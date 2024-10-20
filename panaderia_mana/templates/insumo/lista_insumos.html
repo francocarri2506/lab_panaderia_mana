@@ -1,22 +1,21 @@
-<!-- insumo/lista_productos.html -->
+{% extends 'base.html' %}
 
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Insumos</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>Insumos Disponibles</h1>
-        <a href="{% url 'agregar_insumo' %}" class="btn btn-primary mb-3">Agregar Insumo</a>
-        <table class="table table-striped">
+{% block title %}
+    Lista de Insumos
+{% endblock %}
+
+{% block titulo %}
+    Lista de Insumos
+{% endblock %}
+
+{% block content %}
+    <table class="table table-striped">
             <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Cantidad Disponible</th>
                     <th>Cantidad Minima</th>
+                    <th>Acciones</th>
                 </tr>
             </thead>
             <tbody>
@@ -25,6 +24,8 @@
                         <td>{{ insumo.nombre }}</td>
                         <td>{{ insumo.cantidad_disponible }}</td>
                         <td>{{ insumo.cantidad_minima }}</td>
+                        <td><a class="btn bg-primary" href="{% url 'editar_insumo' insumo.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_insumo' insumo.id %}">Eliminar</a></td>
+
                     </tr>
                 {% empty %}
                     <tr>
@@ -33,6 +34,4 @@
                 {% endfor %}
             </tbody>
         </table>
-    </div>
-</body>
-</html>
+{% endblock %}

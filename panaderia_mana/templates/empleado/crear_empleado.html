@@ -1,7 +1,21 @@
-<h2>Crear Empleado</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Guardar</button>
-</form>
-<a href="{% url 'listar_empleados' %}">Cancelar</a>
+
+{% extends 'base.html' %}
+
+{% block title %}
+    Empleado
+{% endblock %}
+
+{% block titulo %}
+    Crear Empleado
+{% endblock %}
+
+{% block content %}
+    <form method="post" >
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mb-1 container text-center">
+            <input type="reset" value="Cancelar" class="btn bg-danger">
+            <input type="submit" value="Registrar" class="btn bg-primary">
+        </div>
+    </form>
+{% endblock %}
