@@ -27,9 +27,7 @@ urlpatterns = [
     path('', views.pagina_inicio, name='pagina_inicio'),  # Ruta para la página de inicio
     #path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
     #path('', include('apps.usuario.urls', namespace='usuario')),
-    path('productos/', include('producto.urls')),
     path('empleado/', include('empleado.urls')),
-    path('cliente/', include('cliente.urls')),
     path('usuario/', include('apps.usuario.urls')),
 
 

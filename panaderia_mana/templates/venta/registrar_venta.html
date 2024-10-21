@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Registro de Venta
+{% endblock %}
+
+{% block titulo %}
+    Registrar Venta
+{% endblock %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <div class="mb-1 container text-center">
+            <div class="input-group mb-3 container">
+                            <span class="input-group-text bg-faded" id="nom_prod">Nombre Producto:</span>
+                            <span class="input-group-text bg-faded" id="precio">Precio: $</span>
+                            <span class="input-group-text bg-faded" id="tipo">Tipo:</span>
+                            <span class="input-group-text bg-faded" id="cantidad">Cantidad:</span>
+            </div>
+            <input type="reset" value="Cancelar" class="btn bg-danger">
+            <input type="submit" value="Registrar" class="btn bg-primary">
+        </div>
+    </form>
+{% endblock %}
