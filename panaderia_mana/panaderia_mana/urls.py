@@ -29,6 +29,7 @@ urlpatterns = [
     #path('', include('apps.usuario.urls', namespace='usuario')),
     path('empleado/', include('empleado.urls')),
     path('usuario/', include('apps.usuario.urls')),
+    path('venta/', include('venta.urls')),
 
 
                   # path('', views.index, name='index'),  # Ruta para la página de inicio

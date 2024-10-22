@@ -1,8 +1,7 @@
 # views.py
 
 from django.shortcuts import render
-from django.views.generic.edit import FormView
-from .forms import ItemForm
+
 
 
 def index(request):
@@ -17,7 +16,3 @@ def gestion_producto(request):
 def ventas(request):
     return render(request, 'ventas.html')
 
-class registrar_venta(FormView):
-    template_name = 'venta/registar_venta.html'
-    form_class = ItemForm
-    success_url = ''
