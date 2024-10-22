@@ -1,10 +1,13 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import ProductoForm
+from django.views.generic import FormView
+
+from .forms import ProductoForm, ItemForm
 from .models import Producto
 from .models import ClienteMayorista
 from .forms import ClienteMayoristaForm
 from .models import Venta
 from .forms import VentaForm
+from django.forms import formset_factory
 
 
 # Create your views here.
@@ -90,3 +93,17 @@ def eliminar_venta(request, venta_id):
     venta = get_object_or_404(Venta, id=venta_id)
     venta.delete()
     return redirect('lista_ventas')
+
+class AgregarItem(FormView):
+    template_name = 'venta/nueva_venta.html'
+    form_class = formset_factory(ItemForm)
+    
+    def form_valid(self, form):
+        for f in form:
+            f.save()
+
+        return super(AgregarItem, self).form_valid(form)
+
+def eliminar_item(request, item_id):
+    item = get_object_or_404(Item, id=item_id)
+    item.delete()

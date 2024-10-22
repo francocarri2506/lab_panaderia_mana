@@ -66,7 +66,6 @@ class Item(models.Model):
     prod = models.ForeignKey(Producto, on_delete=models.CASCADE)
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
-    precioProdUnidad = models.DecimalField(max_digits=100,decimal_places=2)
     subTotal = models.DecimalField(max_digits=100,decimal_places=2)
 
     def __str__(self):

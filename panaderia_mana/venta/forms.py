@@ -3,6 +3,7 @@ from django.forms import DateInput
 from .models import ClienteMayorista
 from .models import Producto
 from .models import Venta
+from .models import Item
 
 
 class ProductoForm(forms.ModelForm):
@@ -47,4 +48,13 @@ class VentaForm(forms.ModelForm):
             'observaciones': forms.TextInput(attrs={'class': 'form-control'}),
             'clienteM': forms.Select(),
 
+        }
+
+class ItemForm(forms.ModelForm):
+    class Meta:
+        model = Item
+        fields = ['prod', 'cantidad']
+        widgets = {
+            'prod': forms.Select(),
+            'cantidad': forms.NumberInput(attrs={'class': 'form-control'})
         }
