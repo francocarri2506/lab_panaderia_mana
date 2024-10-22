@@ -23,19 +23,6 @@ class Producto(models.Model):
         self.cantidadDisponible += cantidad
         self.save()
 
-    def darBaja(self):
-        self.delete()
-
-    def modificar(self, nombre, descripcion, precio, unidadMedida, tipo,imagen ):
-        self.nombre = nombre
-        self.descripcion = descripcion
-        self.precio = precio
-        self.unidadMedida = unidadMedida
-        self.tipo = tipo
-        self.imagen = imagen
-
-        self.save()
-
     def __str__(self):
         return self.nombre
 
@@ -75,11 +62,13 @@ class Venta(models.Model):
 
 
 #items
-"""class Item(models.Model):
+class Item(models.Model):
     prod = models.ForeignKey(Producto, on_delete=models.CASCADE)
     venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
     cantidad = models.IntegerField()
+    precioProdUnidad = models.DecimalField(max_digits=100,decimal_places=2)
+    subTotal = models.DecimalField(max_digits=100,decimal_places=2)
 
     def __str__(self):
-        return f"{self.prod}"+f"{self.cantidad}"
-"""
+        return f"{self.prod} - {self.cantidad} - {self.subtotal}"
+

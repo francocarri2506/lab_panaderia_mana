@@ -1,6 +1,8 @@
 from django import forms
+from django.forms import DateInput
 from .models import ClienteMayorista
 from .models import Producto
+from .models import Venta
 
 
 class ProductoForm(forms.ModelForm):
@@ -14,7 +16,7 @@ class ProductoForm(forms.ModelForm):
             'cantidadDisponible': forms.NumberInput(attrs={'class': 'form-control'}),
             'unidadMedida': forms.TextInput(attrs={'class': 'form-control'}),
             'tipo': forms.TextInput(attrs={'class': 'form-control'}),
-            #'imagen': forms.ImageField()
+            'imagen': forms.ClearableFileInput(),
         }
 
 
@@ -30,4 +32,19 @@ class ClienteMayoristaForm(forms.ModelForm):
             'domicilioNumero': forms.NumberInput(attrs={'class': 'form-control'}),
             'domicilioLocalidad': forms.TextInput(attrs={'class': 'form-control'}),
             'domicilioDepartamento': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
+class VentaForm(forms.ModelForm):
+    class Meta:
+        model = Venta
+        fields =  ['tipoCliente',  'fechaVenta', 'tipoVenta', 'formaPago', 'tipoComprobante', 'observaciones', 'clienteM']
+        widgets = {
+            'tipoCliente': forms.TextInput(attrs={'class': 'form-control'}),
+            'fechaVenta': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
+            'tipoVenta': forms.TextInput(attrs={'class': 'form-control'}),
+            'formaPago': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipoComprobante': forms.TextInput(attrs={'class': 'form-control'}),
+            'observaciones': forms.TextInput(attrs={'class': 'form-control'}),
+            'clienteM': forms.Select(),
+
         }

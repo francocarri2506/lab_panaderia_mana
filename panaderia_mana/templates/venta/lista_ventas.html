@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Ventas
+{% endblock %}
+
+{% block titulo %}
+    Lista de Ventas
+{% endblock %}
+
+{% block content %}
+    <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Numero Venta</th>
+                    <th>Fecha</th>
+                    <th>Monto Total</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                    <tr>
+                        <td>{{ venta.id }}</td>
+                        <td>{{ venta.fechaVenta }}</td>
+                        <td>{{ venta.montoTotal }}</td>
+                        <td>
+
+                          <a class="btn bg-danger" href="{% url 'eliminar_venta' venta.id %}">Eliminar</a></td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No hay Ventas Cargadas.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <a class="btn bg-primary" href="{% url 'registrar_venta' %}">Registar Venta</a>
+{% endblock %}
