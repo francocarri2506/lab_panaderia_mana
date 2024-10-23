@@ -48,26 +48,25 @@ class Venta(models.Model):
     tipoVenta = models.CharField(max_length=100)
     formaPago = models.CharField(max_length=100)
     tipoComprobante = models.CharField(max_length=100)
-    numComprobante = models.IntegerField(unique=True)
     montoTotal = models.DecimalField(decimal_places=2, max_digits=100)
     observaciones = models.CharField(max_length=1000)
     # empleado
-    empleadoVenta = models.ForeignKey(Empleado,on_delete=models.CASCADE,default=100)
+    empleadoVenta = models.ForeignKey(Empleado,on_delete=models.CASCADE,default=1)
     clienteM = models.ForeignKey(ClienteMayorista, on_delete=models.CASCADE, blank=True, null=True)
 
 
     def __str__(self):
-        return self.numComprobante
+        return self.montoTotal
 
 
 
 #items
 class Item(models.Model):
     prod = models.ForeignKey(Producto, on_delete=models.CASCADE)
-    venta = models.ForeignKey(Venta, on_delete=models.CASCADE)
+    venta = models.ForeignKey(Venta, on_delete=models.CASCADE,blank=True,null=True)
     cantidad = models.IntegerField()
     subTotal = models.DecimalField(max_digits=100,decimal_places=2)
 
     def __str__(self):
-        return f"{self.prod} - {self.cantidad} - {self.subtotal}"
+        return f"{self.prod} - {self.cantidad} - {self.subTotal}"
 

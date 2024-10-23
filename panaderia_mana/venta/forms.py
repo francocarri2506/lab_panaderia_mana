@@ -46,7 +46,7 @@ class VentaForm(forms.ModelForm):
             'formaPago': forms.TextInput(attrs={'class': 'form-control'}),
             'tipoComprobante': forms.TextInput(attrs={'class': 'form-control'}),
             'observaciones': forms.TextInput(attrs={'class': 'form-control'}),
-            'clienteM': forms.Select(),
+            'clienteM': forms.Select(attrs={'class': 'form-select'}),
 
         }
 
@@ -55,6 +55,6 @@ class ItemForm(forms.ModelForm):
         model = Item
         fields = ['prod', 'cantidad']
         widgets = {
-            'prod': forms.Select(),
+            'prod': forms.Select(attrs={'class': 'form-select'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'})
         }

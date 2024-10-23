@@ -9,6 +9,7 @@ from .models import Venta
 from .forms import VentaForm
 from django.forms import formset_factory
 
+items = []
 
 # Create your views here.
 def lista_productos(request):
@@ -82,8 +83,21 @@ def lista_ventas(request):
 def registrar_venta(request):
     if request.method == 'POST':
         form = VentaForm(request.POST)
+        total=0
         if form.is_valid():
-            form.save()
+            for i in items:
+                total += i.subTotal
+
+            venta = form.save(commit=False)
+            venta.montoTotal = total
+            venta.save()
+            for i in items:
+                i.venta = venta
+                producto = get_object_or_404(Producto, id=i.prod)
+                producto.venta(i.cantidad)
+                i.save()
+
+
             return redirect('lista_ventas')
     else:
         form = VentaForm()
@@ -97,13 +111,22 @@ def eliminar_venta(request, venta_id):
 class AgregarItem(FormView):
     template_name = 'venta/nueva_venta.html'
     form_class = formset_factory(ItemForm)
-    
-    def form_valid(self, form):
-        for f in form:
-            f.save()
+    success_url = 'registrar_venta'
 
+
+    def form_valid(self, form):
+
+        for f in form:
+            producto = get_object_or_404(Producto,nombre=f.cleaned_data['prod'])
+            itemV = f.save(commit=False)
+            itemV.subTotal = float(producto.precio) * int(f.cleaned_data['cantidad'])
+            items.append(itemV)
+
+
+        redirect('registrar_venta')
         return super(AgregarItem, self).form_valid(form)
 
 def eliminar_item(request, item_id):
     item = get_object_or_404(Item, id=item_id)
     item.delete()
+
