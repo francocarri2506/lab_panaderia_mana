@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block title %}
     Registro de Venta
@@ -9,13 +10,96 @@
 {% endblock %}
 
 {% block content %}
-    <form method="post">
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const addButton = document.getElementById('add-form');
+    const formsetContainer = document.getElementById('formset-container');
+    const totalForms = document.getElementById('id_secciones-TOTAL_FORMS');
+
+    // Función para actualizar los índices de los formularios
+    function updateFormIndexes() {
+        const forms = formsetContainer.getElementsByClassName('item-form');
+        for (let i = 0; i < forms.length; i++) {
+            const formInputs = forms[i].getElementsByTagName('input');
+            const formSelects = forms[i].getElementsByTagName('select');
+
+            for (let input of formInputs) {
+                updateElementIndex(input, 'items', i);
+            }
+            for (let select of formSelects) {
+                updateElementIndex(select, 'items', i);
+            }
+        }
+        totalForms.value = forms.length;
+    }
+
+    // Función para actualizar el índice de un elemento
+    function updateElementIndex(element, prefix, index) {
+        const idRegex = new RegExp(`(${prefix}-\\d+)`);
+        const replacement = `${prefix}-${index}`;
+        if (element.id) element.id = element.id.replace(idRegex, replacement);
+        if (element.name) element.name = element.name.replace(idRegex, replacement);
+    }
+
+    // Agregar nuevo formulario
+    addButton.addEventListener('click', function(e) {
+        e.preventDefault();
+        const formCount = formsetContainer.children.length;
+        const template = formsetContainer.children[0].cloneNode(true);
+
+        // Limpiar los valores del formulario clonado
+        template.querySelectorAll('input[type="text"]').forEach(input => input.value = '');
+        template.querySelectorAll('select').forEach(select => select.selectedIndex = 0);
+
+        formsetContainer.appendChild(template);
+        updateFormIndexes();
+    });
+
+    // Eliminar formulario
+    formsetContainer.addEventListener('click', function(e) {
+        if (e.target.classList.contains('delete-form')) {
+            e.preventDefault();
+            const form = e.target.closest('.item-form');
+            form.remove();
+            updateFormIndexes();
+        }
+    });
+});
+</script>
+    <div class="container mt-4">
+    <h2>Registrar Venta</h2>
+
+    <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
-        {{ form.as_p }}
-        <div class="mb-1 container text-center">
-            <input type="reset" value="Cancelar" class="btn bg-danger">
-            <input type="submit" value="Registrar" class="btn bg-primary">
+        <!-- Formulario de la venta -->
+        <div class="container mb-4">
+            <div class="card-body">
+                <h4>Información de la Venta</h4>
+                {{ form.as_p }}
+            </div>
         </div>
+
+        <!-- Secciones Formset -->
+        <div class="container">
+            <div class="card-body">
+                <h4>Items</h4>
+                {{ formset.management_form }}
+                <div id="formset-container">
+                    {% for form in formset %}
+                    <div class="item-form mb-3 p-3 border rounded">
+                        {{ form.as_p }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <button type="button" class="btn btn-secondary" id="add-form">Agregar Item</button>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary mt-4">Guardar Venta</button>
     </form>
+</div>
 {% endblock %}
+
+
+

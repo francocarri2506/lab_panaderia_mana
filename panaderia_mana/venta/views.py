@@ -1,7 +1,8 @@
+from django.core.checks import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
 
-from .forms import ProductoForm, ItemForm
+from .forms import ProductoForm, ItemForm, ItemFormSet
 from .models import Producto
 from .models import ClienteMayorista
 from .forms import ClienteMayoristaForm
@@ -80,7 +81,45 @@ def lista_ventas(request):
     ventas = Venta.objects.all()
     return render(request, 'venta/lista_ventas.html',{'ventas': ventas})
 
+
 def registrar_venta(request):
+    if request.method == 'POST':
+        form = VentaForm(request.POST, request.FILES)
+        if form.is_valid():
+            total = 0
+            venta = form.save(commit=False)
+            formset = ItemFormSet(request.POST, instance=venta)
+            if formset.is_valid():
+                for f in formset:
+                    producto = get_object_or_404(Producto, nombre=f.cleaned_data['prod'])
+                    itemV = f.save(commit=False)
+                    itemV.subTotal = float(producto.precio) * int(f.cleaned_data['cantidad'])
+                    total += itemV.subTotal
+                    items.append(itemV)
+
+                venta.montoTotal = total
+                venta.save()
+                for i in items:
+                    i.venta = venta
+                    producto = get_object_or_404(Producto, nombre=i.prod)
+                    producto.venta(i.cantidad)
+                    i.save()
+
+                for i in items:
+                    items.remove(i)
+
+                messages.success(request, 'Venta registrada exitosamente.')
+                return redirect('lista_ventas')
+    else:
+        form = VentaForm()
+        formset = ItemFormSet()
+
+    return render(request, 'venta/registrar_venta.html', {
+        'form': form,
+        'formset': formset
+    })
+
+"""def registrar_venta(request):
     if request.method == 'POST':
         form = VentaForm(request.POST)
         total=0
@@ -101,7 +140,7 @@ def registrar_venta(request):
             return redirect('lista_ventas')
     else:
         form = VentaForm()
-    return render(request, 'venta/registrar_venta.html', {'form': form})
+    return render(request, 'venta/registrar_venta.html', {'form': form})"""
 
 def eliminar_venta(request, venta_id):
     venta = get_object_or_404(Venta, id=venta_id)

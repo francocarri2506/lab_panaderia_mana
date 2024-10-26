@@ -1,5 +1,5 @@
 from django import forms
-from django.forms import DateInput
+from django.forms import DateInput, inlineformset_factory
 from .models import ClienteMayorista
 from .models import Producto
 from .models import Venta
@@ -58,3 +58,11 @@ class ItemForm(forms.ModelForm):
             'prod': forms.Select(attrs={'class': 'form-select'}),
             'cantidad': forms.NumberInput(attrs={'class': 'form-control'})
         }
+
+ItemFormSet = inlineformset_factory(
+    Venta,
+    Item,
+    form=ItemForm,
+    extra=1,  # Número de formularios vacíos
+    can_delete=True  # Permite eliminar
+)
