@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Detalles del Pedido</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Detalles del Pedido #{{ pedido.id }}</h2>
+    <p><strong>Fecha:</strong> {{ pedido.fecha }}</p>
+    <p><strong>Total:</strong> {{ pedido.total }}</p>
+
+    <h3>Insumos del Pedido</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Precio Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.insumo.nombre }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.insumo.precio_unitario }}</td>
+                <td>{{ detalle.precio_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+</body>
+</html>

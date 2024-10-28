@@ -8,8 +8,9 @@ class Producto(models.Model):
     cantidadDisponible = models.IntegerField()
     unidadMedida = models.CharField(max_length=50)
     tipo = models.CharField(max_length=200)
-    imagen = models.FileField(default='default_image.jpg')
-
+    #imagen = models.FileField(default='default_image.jpg')
+    imagen = models.FileField()
+    """
     def venta(self, cantidadVendida):
         if cantidadVendida <= self.cantidadDisponible:
             self.cantidadDisponible -= cantidadVendida
@@ -33,6 +34,6 @@ class Producto(models.Model):
         self.imagen = imagen
 
         self.save()
-
+    """
     def __str__(self):
         return self.nombre

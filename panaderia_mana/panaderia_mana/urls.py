@@ -31,6 +31,9 @@ urlpatterns = [
     path('empleado/', include('empleado.urls')),
     path('cliente/', include('cliente.urls')),
     path('usuario/', include('apps.usuario.urls')),
+    #path('pedidos/', include('pedido.urls')),
+    path('pedido/', include('pedido.urls', namespace='pedido')),
+
 
 
                   # path('', views.index, name='index'),  # Ruta para la página de inicio
@@ -39,3 +42,7 @@ urlpatterns = [
     #path('ventas/', views.ventas, name='ventas'),  # Ruta para Ventas
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -1,0 +1,37 @@
+<!-- registrar_pedido.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Pedido</title>
+    <style>
+        /* Agrega tus estilos o utiliza un archivo CSS externo */
+    </style>
+</head>
+<body>
+    <h2>Registro de Pedido</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ pedido_form.as_p }}
+        <h3>Detalles del Pedido</h3>
+        <table>
+            {{ detalle_formset.management_form }}
+            {% for form in detalle_formset %}
+                <tr>
+                    <td>{{ form.insumo }}</td>
+                    <td>{{ form.cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <button type="button" onclick="agregarFila()">Agregar Insumo</button>
+        <br><br>
+        <button type="submit">Registrar Pedido</button>
+    </form>
+    <script>
+        function agregarFila() {
+            // Código JavaScript para agregar una nueva fila al formset
+        }
+    </script>
+</body>
+</html>
