@@ -15,7 +15,7 @@ def login_view(request):
         user = authenticate(request, username=username, password=password)
         if user:
             login(request, user)
-            return redirect(reverse("home"))
+            return redirect(reverse("pagina_inicio"))
         else:
             return render(request, "usuario/login.html", {"msj": "Credenciales incorrectas"})
     return render(request, "usuario/login.html")
@@ -27,14 +27,14 @@ def logout_view(request):
 
 
 
-#@login_required
+@login_required(login_url='usuario:login')
 def listar_usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuario/listar_usuarios.html', {'usuarios': usuarios})
 
 
 #@login_required
-def crear_usuario(request):
+"""def crear_usuario(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
@@ -61,3 +61,4 @@ def eliminar_usuario(request, usuario_id):
     usuario = get_object_or_404(Usuario, id=usuario_id)
     usuario.delete()
     return redirect('listar_usuarios')
+"""

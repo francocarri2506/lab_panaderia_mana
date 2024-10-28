@@ -33,10 +33,20 @@
                         <ul class="navbar-nav mx-auto">
 
                             <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/">INICIO</a></li>
-                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="registroPedidos.html">Registro de Pedidos</a></li>
-                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="venta/lista_productos">Gestión de Productos</a></li>
-                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="venta/lista_ventas.html">Ventas</a></li>
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'lista_insumos' %}">Gestión de Insumos</a></li>
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'lista_productos' %}">Gestión de Productos</a></li>
+                            <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'lista_ventas' %}">Ventas</a></li>
                         </ul>
+                        <span class="navbar-text ms-auto">
+                            {% if user.is_authenticated %}
+                                {{ user.username }}
+                                <a class="btn btn-outline-success me-2"
+                                href="{% url 'usuario:logout' %}">Cerrar sesión</a>
+                            {% else %}
+                                <a class="btn btn-outline-success me-2"
+                                href="{% url 'usuario:login' %}">Iniciar sesión</a>
+                            {% endif %}
+                        </span>
                     </div>
                 </div>
             </nav>

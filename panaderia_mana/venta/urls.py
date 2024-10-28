@@ -14,5 +14,5 @@ urlpatterns = [
     path('lista_ventas', views.lista_ventas, name='lista_ventas'),
     path('registrar_venta', views.registrar_venta, name='registrar_venta'),
     path('eliminar_venta/<int:venta_id>/', views.eliminar_venta, name='eliminar_venta'),
-    path('nueva_venta', views.AgregarItem.as_view(), name='nueva_venta'),
+    #path('nueva_venta', views.AgregarItem.as_view(), name='nueva_venta'),
 ]
