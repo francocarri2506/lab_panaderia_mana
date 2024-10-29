@@ -1,14 +1,17 @@
-from django.core.checks import messages
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+
 from .forms import ProductoForm, ItemForm, ItemFormSet
-from .models import Producto
+from .models import Producto, Item
 from .models import ClienteMayorista
 from .forms import ClienteMayoristaForm
 from .models import Venta
 from .forms import VentaForm
 from django.forms import formset_factory
+
+from empleado.models import Empleado
 
 items = []
 
@@ -92,45 +95,50 @@ def lista_ventas(request):
 @login_required(login_url='usuario:login')
 def registrar_venta(request):
     if request.method == 'POST':
-        form = VentaForm(request.POST, request.FILES)
-        if form.is_valid():
+        venta_form = VentaForm(request.POST)
+        if venta_form.is_valid():
             total = 0
-            venta = form.save(commit=False)
-            formset = ItemFormSet(request.POST, instance=venta)
-            if formset.is_valid():
-                for f in formset:
-                    producto = get_object_or_404(Producto, nombre=f.cleaned_data['prod'])
-                    itemV = f.save(commit=False)
-                    itemV.subTotal = float(producto.precio) * int(f.cleaned_data['cantidad'])
-                    total += itemV.subTotal
-                    items.append(itemV)
+            venta = venta_form.save(commit=False)
+            items_ids = request.POST.getlist('producto_id[]')
+            cantidades = request.POST.getlist('cantidad[]')
+            for item_id, cantidad in zip(items_ids, cantidades):
+                item = Producto.objects.get(id=item_id)
+                total+= (item.precio * int(cantidad))
 
-                venta.montoTotal = total
-                venta.save()
-                for i in items:
-                    i.venta = venta
-                    producto = get_object_or_404(Producto, nombre=i.prod)
-                    producto.venta(i.cantidad)
-                    i.save()
+            venta.montoTotal = total
+            usuario = request.user
+            empleado = get_object_or_404(Empleado, usuario=usuario)
+            venta.empleadoVenta = empleado
+            venta.save()
+            for item_id, cantidad in zip(items_ids, cantidades):
+                item = Producto.objects.get(id=item_id)
+                item.venta(int(cantidad))
+                Item.objects.create(
+                    prod=item,
+                    venta=venta,
+                    cantidad=cantidad,
+                    subTotal=item.precio * int(cantidad)
+                )
 
-                for i in items:
-                    items.remove(i)
 
-                messages.success(request, 'Venta registrada exitosamente.')
-                return redirect('lista_ventas')
+
+            messages.success(request, 'Venta registrada exitosamente.')
+            return redirect('lista_ventas')
     else:
-        form = VentaForm()
-        formset = ItemFormSet()
-
-    return render(request, 'venta/registrar_venta.html', {
-        'form': form,
-        'formset': formset
-    })
+        venta_form = VentaForm()
+    productos = Producto.objects.all()
+    context = {
+        'venta_form': venta_form,
+        'productos': productos,
+    }
+    return render(request, 'venta/registrar_venta.html', context)
 
 """def registrar_venta(request):
     if request.method == 'POST':
         form = VentaForm(request.POST)
         total=0
+        formset = ItemFormSet(request.POST, instance=venta)
+        if formset.is_valid():
         if form.is_valid():
             for i in items:
                 total += i.subTotal
@@ -143,7 +151,22 @@ def registrar_venta(request):
                 producto = get_object_or_404(Producto, id=i.prod)
                 producto.venta(i.cantidad)
                 i.save()
+            for f in formset:
+                    producto = get_object_or_404(Producto, nombre=f.cleaned_data['prod'])
+                    itemV = f.save(commit=False)
+                    itemV.subTotal = float(producto.precio) * int(f.cleaned_data['cantidad'])
+                    total += itemV.subTotal
+                    items.append(itemV)
 
+
+            for i in items:
+                    i.venta = venta
+                    producto = get_object_or_404(Producto, nombre=i.prod)
+                    producto.venta(i.cantidad)
+                    i.save()
+
+                for i in items:
+                    items.remove(i)
 
             return redirect('lista_ventas')
     else:

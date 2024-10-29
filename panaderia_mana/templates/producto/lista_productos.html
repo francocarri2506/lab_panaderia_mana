@@ -15,6 +15,7 @@
                     <th>Nombre</th>
                     <th>Descripcion</th>
                     <th>Precio</th>
+                    <th>Cantidad Disponible</th>
                     <th>Acciones</th>
                 </tr>
             </thead>
@@ -24,6 +25,7 @@
                         <td>{{ producto.nombre }}</td>
                         <td>{{ producto.descripcion }}</td>
                         <td>{{ producto.precio }}</td>
+                        <td>{{ producto.cantidadDisponible }}</td>
                         <td><a class="btn bg-primary" href="{% url 'editar_producto' producto.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_producto' producto.id %}">Eliminar</a></td>
 
                     </tr>
