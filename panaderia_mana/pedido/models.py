@@ -1,22 +1,10 @@
-#from django.db import models
-
-# Create your models here.
-#class Pedido(models.Model):
-    #numeroPedido = models.IntegerField(unique=True)
-#    fechaEmision = models.DateField()
-#fechaRecepcion = models.DateField()
-#    observacionesPeticion = models.CharField(max_length=1000)
-#   montoTotal = models.DecimalField(max_digits=100,decimal_places=2)
-#   numeroComprobante = models.IntegerField()
-#   observacionesLlegada = models.CharField(max_length=1000)
-
-#    def __str__(self):
-#       return self.numeroPedido
 
 # pedido/models.py
 from django.db import models
 from insumo.models import Insumo
 from proveedor.models import Proveedor
+from django.db.models import Sum
+
 
 """
 class Pedido(models.Model):
@@ -59,6 +47,11 @@ class Pedido(models.Model):
     def __str__(self):
         return f'Pedido {self.numero_pedido} - {self.proveedor.nombreCompleto}'
 
+
+    # Método para calcular el total del pedido
+    def total(self):
+        return self.detalles.aggregate(total=Sum('precio_total'))['total'] or 0
+
 class DetallePedido(models.Model):
     pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='detalles')
     insumo = models.ForeignKey(Insumo, on_delete=models.CASCADE)
@@ -67,3 +60,39 @@ class DetallePedido(models.Model):
 
     def __str__(self):
         return f'{self.cantidad} de {self.insumo.nombre}'
+
+
+#esto es lo que estoy haciendo ahora
+"""
+from django.db import models
+from django.utils import timezone
+from .models import Insumo, Empleado  # Asegúrate de que Insumo esté en la misma app o importarlo correctamente
+
+
+class ItemRecepcion(models.Model):
+    nombre = models.CharField(max_length=100)
+    cantidad = models.IntegerField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def __str__(self):
+        return f'{self.nombre} - {self.cantidad} unidades'
+
+
+class RecepcionPedido(models.Model):
+    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='recepciones')
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
+    fecha_recepcion = models.DateTimeField(default=timezone.now)
+    conformidad = models.BooleanField()
+    observaciones = models.TextField(blank=True, null=True)
+    items = models.ManyToManyField(ItemRecepcion, related_name='recepciones')
+
+    def __str__(self):
+        return f'Recepción del Pedido {self.pedido.numero_pedido}'
+
+    def incrementar_stock_insumos(self):
+        for item in self.items.all():
+            insumo = Insumo.objects.get(nombre=item.nombre)
+            insumo.stock_actual += item.cantidad
+            insumo.save()
+
+"""

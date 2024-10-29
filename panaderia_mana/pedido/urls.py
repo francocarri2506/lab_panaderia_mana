@@ -18,8 +18,10 @@ app_name = 'pedido'
 urlpatterns = [
     path('registrar-pedido/', registrar_pedido, name='registrar_pedido'),
     path('', views.listar_pedidos, name='listar_pedidos'),
+    path('pedido/<int:pedido_id>/', views.detalles_pedido, name='detalles_pedido'),
 
-    path('detalles_pedido/<int:pedido_id>/', views.detalles_pedido, name='detalles_pedido'),
+
+
 
     path('<int:pedido_id>/eliminar/', views.eliminar_pedido, name='eliminar_pedido'),
     path('<int:pedido_id>/editar/', views.editar_pedido, name='editar_pedido'),

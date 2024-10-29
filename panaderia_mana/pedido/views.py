@@ -58,6 +58,11 @@ def detalles_pedido(request, pedido_id):
     }
     return render(request, 'pedido/detalles_pedido.html', context)
 
+"""
+def detalles_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    return render(request, 'pedido/detalles_pedido.html', {'pedido': pedido})
+"""
 def eliminar_pedido(request, pedido_id):
     # Obtener el pedido por su ID y eliminarlo
     pedido = get_object_or_404(Pedido, id=pedido_id)

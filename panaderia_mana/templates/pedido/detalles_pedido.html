@@ -1,30 +1,21 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Detalles del Pedido</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <h2>Detalles del Pedido #{{ pedido.id }}</h2>
-    <p><strong>Fecha:</strong> {{ pedido.fecha }}</p>
-    <p><strong>Total:</strong> {{ pedido.total }}</p>
+{% extends 'base.html' %}
 
-    <h3>Insumos del Pedido</h3>
-    <table>
+{% block title %}
+    Detalles del Pedido
+{% endblock %}
+
+{% block titulo %}
+    Detalles del Pedido N°{{ pedido.id }}
+{% endblock %}
+
+{% block content %}
+
+    <p><strong>Proveedor:</strong> {{ pedido.proveedor }}</p>
+    <p><strong>Fecha:</strong> {{ pedido.fecha_solicitud }}</p>
+    <p><strong>Observaciones:</strong> {{ pedido.observaciones }}</p> <br>
+
+    <h2>Insumos del Pedido</h2>
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Insumo</th>
@@ -44,8 +35,5 @@
             {% endfor %}
         </tbody>
     </table>
-
-
-
-</body>
-</html>
+<p><strong>Total:</strong> {{ pedido.total }}</p>
+{% endblock %}

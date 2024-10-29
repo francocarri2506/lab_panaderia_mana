@@ -1,26 +1,16 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <title>Lista de Pedidos</title>
-    <style>
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid black;
-        }
-        th, td {
-            padding: 8px;
-            text-align: left;
-        }
-    </style>
-</head>
-<body>
-    <h2>Lista de Pedidos</h2>
-    <table>
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Pedidos
+{% endblock %}
+
+{% block titulo %}
+    Lista de Pedidos
+{% endblock %}
+
+{% block content %}
+
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>ID del Pedido</th>
@@ -37,13 +27,16 @@
                 <td>{{ pedido.fecha_solicitud }}</td>
                 <td>{{ pedido.total }}</td>
                 <td>{{ pedido.proveedor}}</td>
-
                 <td>
+     <!--aca quiero un link que me lleve a la descripcion de cada pedido, es decir detalle pedido-->
+                <!-- Botón para ver detalles -->
+                <a href="{% url 'detalles_pedido' pedido.id %}" class="btn btn-info">Ver detalles</a>
+
 
                 </td>
             </tr>
             {% endfor %}
         </tbody>
     </table>
-</body>
-</html>
+{% endblock %}
+
