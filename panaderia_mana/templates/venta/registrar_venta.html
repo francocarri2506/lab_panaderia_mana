@@ -10,6 +10,94 @@
 {% endblock %}
 
 {% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+             document.getElementById("id_fechaVenta").addEventListener("change",function(){
+             let fecha = new Date().getTime();
+             let fec = document.getElementById("id_fechaVenta").value;
+             let fechaVenta = new Date(fec).getTime();
+             if(fechaVenta - fecha > 0){
+                alert("¡La fecha de venta no puede ser mayor a la actual!");
+                let x = new Date();
+                var year = x.getFullYear();
+                var month = x.getMonth()+1;
+                var day = x.getDate();
+
+                if(day < 10){
+                    day ="0"+day;
+                }
+                if(month < 10){
+                    month = "0"+month;
+                }
+
+             document.getElementById("id_fechaVenta").value = year+"-"+month+"-"+day;
+             }
+
+            });
+
+            document.getElementById("producto").addEventListener("change", function(){
+                let prod = document.getElementById("producto");
+                let cant = document.getElementById("cantidad");
+                const ids = [];
+                const canti = [];
+                {% for producto in productos %}
+                    ids.push("{{ producto.id }}");
+                    canti.push("{{ producto.cantidadDisponible }}")
+                {% endfor %}
+                for(i = 0; i<ids.length;i++){
+                    if(prod.value==ids[i]){
+                        cant.setAttribute("placeholder", "Disponible: "+canti[i]);
+                    }
+                    else{
+                        if(prod.selectedIndex==0){
+                           cant.setAttribute("placeholder", "Disponible: ");
+                        }
+                    }
+                }
+            });
+
+            document.getElementById("cantidad").addEventListener("change",function(){
+                let cant = document.getElementById("cantidad");
+                let prod = document.getElementById("producto");
+                const ids = [];
+                const canti = [];
+                {% for producto in productos %}
+                    ids.push("{{ producto.id }}");
+                    canti.push("{{ producto.cantidadDisponible }}")
+                {% endfor %}
+                for(i = 0; i<ids.length;i++){
+                    if(prod.value==ids[i]){
+                        if(cant.value>canti[i]){
+                            alert("No hay tanto producto disponible");
+                            cant.value= "";
+                            cant.setAttribute("placeholder", "Disponible: "+canti[i]);
+                        }
+                    }
+                }
+            });
+
+            document.getElementById("id_tipoCliente").addEventListener("change",function(){
+                let tipo = document.getElementById("id_tipoCliente");
+                let opcion = document.getElementById("id_clienteM");
+                if(tipo.value=="MA"){
+                    opcion.setAttribute("required", "");
+                    opcion.removeAttribute("disabled");
+                }else{
+                    opcion.removeAttribute("required");
+                    opcion.setAttribute("disabled", "")
+                }
+            });
+
+            document.getElementById("submit").addEventListener("click", function(event){
+                let contenido = document.getElementById("detallesTabla");
+                if(contenido.firstChild){
+
+                    event.preventDefault();
+                    alert("La lista de Items esta vacía");
+                }
+            });
+    });
+</script>
 
     <h2>Registrar Venta</h2>
 
@@ -31,7 +119,7 @@
             </select>
 
             <label for="cantidad">Cantidad:</label>
-            <input type="number" id="cantidad" min="1" class="form-control"> <br>
+            <input type="number" id="cantidad" min="1" class="form-control" placeholder="Disponible: "> <br>
             <div class="mb-1 container text-center">
                 <button class="btn bg-primary" type="button" onclick="agregarItem()">Agregar Item</button>
             </div>
@@ -45,8 +133,9 @@
                     <th>Acción</th>
                 </tr>
             </thead>
+            <!-- Las filas se agregarán dinámicamente aquí -->
             <tbody id="detallesTabla">
-                <!-- Las filas se agregarán dinámicamente aquí -->
+
             </tbody>
         </table>
         <br><br>
@@ -55,7 +144,8 @@
 
 
         </div>
-         <button type="submit" class="btn btn-primary mt-4">Guardar Venta</button>
+        <button type="reset"  class="btn bg-danger mt-4">Cancelar</button>
+        <button type="submit" id="submit" class="btn btn-primary mt-4">Guardar Venta</button>
     </form>
 
 <script>
@@ -91,8 +181,11 @@
             document.getElementById('detallesTabla').appendChild(nuevaFila);
 
             // Limpiar los campos de producto y cantidad
-            productoSelect.value = '';
-            document.getElementById('cantidad').value = '';
+            document.getElementById('cantidad').value = "";
+            productoSelect.selectedIndex = 0;
+            document.getElementById('cantidad').setAttribute("placeholder","Disponible: ");
+
+
         }
 
         function eliminarFila(boton) {
@@ -100,7 +193,9 @@
             const fila = boton.closest('tr');
             fila.remove();
         }
- </script>
+
+
+</script>
 {% endblock %}
 
         <!-- Secciones Formset

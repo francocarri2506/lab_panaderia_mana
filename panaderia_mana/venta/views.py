@@ -103,8 +103,12 @@ def registrar_venta(request):
             cantidades = request.POST.getlist('cantidad[]')
             for item_id, cantidad in zip(items_ids, cantidades):
                 item = Producto.objects.get(id=item_id)
-                total+= (item.precio * int(cantidad))
+                if item.unidadMedida == "GR":
+                    total+= (item.precio * int(cantidad)/1000)
+                else:
+                    total+= (item.precio * int(cantidad))
 
+            venta.tipoVenta = venta.tipoCliente
             venta.montoTotal = total
             usuario = request.user
             empleado = get_object_or_404(Empleado, usuario=usuario)

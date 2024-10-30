@@ -10,12 +10,32 @@
 {% endblock %}
 
 {% block content %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.getElementById("id_cantidadDisponible").addEventListener("change",function(){
+           let cant = document.getElementById("id_cantidadDisponible");
+           if(cant.value<=0){
+                alert("Cantidad disponible debe ser mayor o igual a 0");
+                cant.value = 0;
+           }
+        });
+        document.getElementById("submit").addEventListener("click",function(event){
+           let cant = document.getElementById("id_cantidadDisponible");
+           if(cant.value<=0){
+                event.preventDefault();
+                alert("Cantidad disponible debe ser mayor o igual a 0");
+                cant.value = 0;
+           }
+        });
+    });
+</script>
+
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
         <div class="mb-1 container text-center">
             <input type="reset" value="Cancelar" class="btn bg-danger">
-            <input type="submit" value="Registrar" class="btn bg-primary">
+            <input type="submit" value="Registrar" class="btn bg-primary" id="submit">
         </div>
     </form>
 {% endblock %}

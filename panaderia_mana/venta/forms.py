@@ -11,12 +11,12 @@ class ProductoForm(forms.ModelForm):
         model = Producto
         fields = ['nombre', 'descripcion', 'precio', 'cantidadDisponible', 'unidadMedida', 'tipo']
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
-            'precio': forms.NumberInput(attrs={'class': 'form-control'}),
-            'cantidadDisponible': forms.NumberInput(attrs={'class': 'form-control'}),
-            'unidadMedida': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipo': forms.TextInput(attrs={'class': 'form-control'}),
+            'precio': forms.NumberInput(attrs={'class': 'form-control','required': True}),
+            'cantidadDisponible': forms.NumberInput(attrs={'class': 'form-control','required': True}),
+            'unidadMedida': forms.Select(attrs={'class': 'form-select','required': True}),
+            'tipo': forms.Select(attrs={'class': 'form-select','required': True}),
             'imagen': forms.ClearableFileInput(),
         }
 
@@ -27,24 +27,24 @@ class ClienteMayoristaForm(forms.ModelForm):
         model = ClienteMayorista
         fields = '__all__'
         widgets = {
-            'cuit': forms.TextInput(attrs={'class': 'form-control'}),
-            'nombreCompleto': forms.TextInput(attrs={'class': 'form-control'}),
-            'domicilioCalle': forms.TextInput(attrs={'class': 'form-control'}),
-            'domicilioNumero': forms.NumberInput(attrs={'class': 'form-control'}),
-            'domicilioLocalidad': forms.TextInput(attrs={'class': 'form-control'}),
-            'domicilioDepartamento': forms.TextInput(attrs={'class': 'form-control'}),
+            'cuit': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'nombreCompleto': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'domicilioCalle': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'domicilioNumero': forms.NumberInput(attrs={'class': 'form-control', 'required': True}),
+            'domicilioLocalidad': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
+            'domicilioDepartamento': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
         }
 
 class VentaForm(forms.ModelForm):
     class Meta:
         model = Venta
-        fields =  ['tipoCliente',  'fechaVenta', 'tipoVenta', 'formaPago', 'tipoComprobante', 'observaciones', 'clienteM']
+        fields =  ['tipoCliente',  'fechaVenta', 'formaPago', 'tipoComprobante', 'observaciones', 'clienteM']
         widgets = {
-            'tipoCliente': forms.TextInput(attrs={'class': 'form-control'}),
-            'fechaVenta': DateInput(format='%Y-%m-%d', attrs={'type': 'date'}),
-            'tipoVenta': forms.TextInput(attrs={'class': 'form-control'}),
-            'formaPago': forms.TextInput(attrs={'class': 'form-control'}),
-            'tipoComprobante': forms.TextInput(attrs={'class': 'form-control'}),
+            'tipoCliente': forms.Select(attrs={'class': 'form-select', 'required': True}),
+            'fechaVenta': DateInput(format='%Y-%m-%d', attrs={'type': 'date', 'required': True}),
+            #'tipoVenta': forms.TextInput(attrs={'class': 'form-control'}),
+            'formaPago': forms.Select(attrs={'class': 'form-select', 'required': True}),
+            'tipoComprobante': forms.Select(attrs={'class': 'form-select', 'required': True}),
             'observaciones': forms.TextInput(attrs={'class': 'form-control'}),
             'clienteM': forms.Select(attrs={'class': 'form-select'}),
 
