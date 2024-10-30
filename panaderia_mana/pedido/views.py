@@ -138,3 +138,89 @@ def editar_pedido(request, pedido_id):
         'insumos': insumos,
     }
     return render(request, 'pedido/editar_pedido.html', context)
+
+#reportes
+
+#1. Vista para Insumos Más Pedidos en PDF
+
+from django.http import HttpResponse
+from reportlab.pdfgen import canvas
+from django.db.models import Sum
+from .models import DetallePedido
+
+
+def insumos_mas_pedidos_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'attachment; filename="insumos_mas_pedidos.pdf"'
+
+    p = canvas.Canvas(response)
+    p.drawString(100, 750, "Insumos Más Pedidos")
+    y = 730
+
+    # Consultamos los insumos más pedidos
+    insumos_mas_pedidos = (DetallePedido.objects
+                           .values('insumo__nombre')
+                           .annotate(total_pedido=Sum('cantidad'))
+                           .order_by('-total_pedido'))
+
+    for insumo in insumos_mas_pedidos:
+        p.drawString(100, y, f"Insumo: {insumo['insumo__nombre']}, Total Pedido: {insumo['total_pedido']}")
+        y -= 20
+
+    p.showPage()
+    p.save()
+    return response
+
+#2. Vista para Insumos Más Pedidos en Excel
+
+import openpyxl
+from django.http import HttpResponse
+from django.db.models import Sum
+from .models import DetallePedido
+
+def insumos_mas_pedidos_excel(request):
+    workbook = openpyxl.Workbook()
+    sheet = workbook.active
+    sheet.title = "Insumos Más Pedidos"
+
+    # Encabezados de las columnas
+    sheet.append(["Insumo", "Total Pedido"])
+
+    # Consultamos los insumos más pedidos
+    insumos_mas_pedidos = (DetallePedido.objects
+                           .values('insumo__nombre')
+                           .annotate(total_pedido=Sum('cantidad'))
+                           .order_by('-total_pedido'))
+
+    for insumo in insumos_mas_pedidos:
+        sheet.append([insumo['insumo__nombre'], insumo['total_pedido']])
+
+    response = HttpResponse(content_type="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet")
+    response['Content-Disposition'] = 'attachment; filename="insumos_mas_pedidos.xlsx"'
+    workbook.save(response)
+    return response
+
+#3. Vista para Insumos Más Pedidos en CSV
+
+import csv
+from django.http import HttpResponse
+from django.db.models import Sum
+from .models import DetallePedido
+
+def insumos_mas_pedidos_csv(request):
+    response = HttpResponse(content_type='text/csv')
+    response['Content-Disposition'] = 'attachment; filename="insumos_mas_pedidos.csv"'
+
+    writer = csv.writer(response)
+    writer.writerow(["Insumo", "Total Pedido"])
+
+    # Consultamos los insumos más pedidos
+    insumos_mas_pedidos = (DetallePedido.objects
+                           .values('insumo__nombre')
+                           .annotate(total_pedido=Sum('cantidad'))
+                           .order_by('-total_pedido'))
+
+    for insumo in insumos_mas_pedidos:
+        writer.writerow([insumo['insumo__nombre'], insumo['total_pedido']])
+
+    return response
