@@ -1,0 +1,125 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Registrar Pedido
+{% endblock %}
+
+{% block titulo %}
+    Registrar Pedido
+{% endblock %}
+
+{% block content %}
+
+    <form method="POST">
+        {% csrf_token %}
+        {{ pedido_form.as_p }}
+        <br>
+        <h3>Detalles del Pedido</h3>
+        <!-- Campos para agregar insumo y cantidad -->
+        <div>
+            <label for="insumo">Insumo:</label>
+            <select id="insumo" class="form-control" >
+                <option value="">Seleccione un insumo</option>
+                {% for insumo in insumos %}
+                    <option value="{{ insumo.id }}">{{ insumo.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" min="1" class="form-control"> <br>
+            <div class="mb-1 container text-center">
+                <button class="btn bg-primary" type="button" onclick="agregarInsumo()">Agregar Insumo</button>
+            </div>
+        </div>
+
+        <!-- Tabla para mostrar los insumos agregados -->
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="detallesTabla">
+                <!-- Las filas se agregarán dinámicamente aquí -->
+            </tbody>
+        </table>
+
+        <br><br>
+        <div class="mb-1 container text-center">
+            <input type="reset" value="Cancelar" class="btn bg-danger">
+            <input type="submit" value="Registrar" class="btn bg-primary">
+        </div>
+    </form>
+{% endblock %}
+{% block funcionesjs %}
+    <script>
+        function agregarInsumo() {
+            // Obtener los valores de los campos de insumo y cantidad
+            const insumoSelect = document.getElementById('insumo');
+            const insumoText = insumoSelect.options[insumoSelect.selectedIndex].text;
+            const insumoId = insumoSelect.value;
+            const cantidad = document.getElementById('cantidad').value;
+
+            if (!insumoId || !cantidad) {
+                alert('Por favor, seleccione un insumo y una cantidad válida.');
+                return;
+            }
+
+            // Crear una nueva fila en la tabla
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.innerHTML = `
+                <td>
+                    <input type="hidden" name="insumo_id[]" value="${insumoId}">
+                    ${insumoText}
+                </td>
+                <td>
+                    <input type="hidden" name="cantidad[]" value="${cantidad}">
+                    ${cantidad}
+                </td>
+                <!--
+                <td>
+                    <button class="btn bg-danger" type="button" onclick="eliminarFila(this)">Eliminar</button>
+                </td>-->
+                <td>
+                    <button class="btn bg-danger" type="button" onclick="mostrarEliminarModal(this)">Eliminar</button>
+                </td>
+            `;
+
+            // Agregar la nueva fila a la tabla
+            document.getElementById('detallesTabla').appendChild(nuevaFila);
+
+            // Limpiar los campos de insumo y cantidad
+            insumoSelect.value = '';
+            document.getElementById('cantidad').value = '';
+        }
+
+        function eliminarFila(boton) {
+            // Eliminar la fila correspondiente
+            const fila = boton.closest('tr');
+            fila.remove();
+        }
+    </script>
+<!--mensaje de confirmacion-->
+    <script>
+        let filaParaEliminar; // Variable para almacenar la fila seleccionada
+
+        // Función para mostrar el modal y almacenar la fila a eliminar
+        function mostrarEliminarModal(boton) {
+            filaParaEliminar = boton.closest('tr'); // Almacenar la fila seleccionada
+            const eliminarModal = new bootstrap.Modal(document.getElementById('eliminarModal'));
+            eliminarModal.show();
+        }
+
+        // Confirmación de eliminación
+        document.getElementById('confirmarEliminar').addEventListener('click', function () {
+            if (filaParaEliminar) {
+                filaParaEliminar.remove(); // Eliminar la fila
+                filaParaEliminar = null; // Reiniciar la variable
+            }
+            const eliminarModal = bootstrap.Modal.getInstance(document.getElementById('eliminarModal'));
+            eliminarModal.hide(); // Cerrar el modal después de eliminar
+        });
+    </script>
+{% endblock %}

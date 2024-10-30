@@ -1,0 +1,75 @@
+<!-- pedido/templates/pedido/agregar_items_pedido.html -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agregar Insumos al Pedido</title>
+    <!-- Incluimos el CSS de Bootstrap o Tailwind -->
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Agregar Insumos al Pedido {{ pedido.numero_pedido }}</h1>
+        <h3>Proveedor: {{ pedido.proveedor.nombre }}</h3>
+        <form method="POST" id="item-form" action="{% url 'agregar_items_pedido' pedido.id %}">
+            {% csrf_token %}
+            <!-- Formulario para seleccionar el insumo y la cantidad -->
+            <div class="mb-3">
+                <label for="id_insumo" class="form-label">Insumo:</label>
+                {{ item_form.insumo|as_widget(attrs={'class': 'form-control'}) }}
+            </div>
+            <div class="mb-3">
+                <label for="id_cantidad" class="form-label">Cantidad:</label>
+                {{ item_form.cantidad|as_widget(attrs={'class': 'form-control'}) }}
+            </div>
+            <div class="mb-3">
+                <label for="id_precio" class="form-label">Precio:</label>
+                {{ item_form.precio|as_widget(attrs={'class': 'form-control'}) }}
+            </div>
+            <button type="submit" class="btn btn-primary">Agregar Insumo</button>
+        </form>
+
+        <!-- Tabla para mostrar los insumos agregados al pedido -->
+        <h2 class="mt-5">Insumos Agregados</h2>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in items %}
+                <tr>
+                    <td>{{ item.insumo.nombre }}</td>
+                    <td>{{ item.cantidad }}</td>
+                    <td>{{ item.precio }}</td>
+                    <td>{{ item.cantidad|floatformat:2 }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        // Aquí podrías agregar la lógica para enviar el formulario usando AJAX y actualizar la tabla sin recargar la página.
+        // Ejemplo de cómo capturar el envío del formulario y actualizar la tabla.
+        $('#item-form').submit(function(e) {
+            e.preventDefault();
+            $.ajax({
+                type: 'POST',
+                url: $(this).attr('action'),
+                data: $(this).serialize(),
+                success: function(response) {
+                    // Aquí se puede actualizar la tabla de insumos sin recargar la página
+                    location.reload();  // Recargar la página para ver los nuevos insumos agregados
+                }
+            });
+        });
+    </script>
+</body>
+</html>

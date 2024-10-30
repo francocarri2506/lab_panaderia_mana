@@ -23,7 +23,7 @@
                     <tr>
                         <td>{{ empleado.nombreCompleto }}</td>
                         <td>{{ empleado.cuit }}</td>
-                        <td> <a class="btn bg-primary" href="{% url 'editar_empleado' cliente.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_empleado' cliente.id %}">Eliminar</a></td>
+                        <td> <a class="btn bg-primary" href="{% url 'editar_empleado' empleado.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_empleado' empleado.id %}">Eliminar</a></td>
 
                     </tr>
                 {% empty %}

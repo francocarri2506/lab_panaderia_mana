@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Pedidos
+{% endblock %}
+
+{% block titulo %}
+    Lista de Pedidos
+{% endblock %}
+
+{% block content %}
+<br>
+{% if messages %}
+    <div class="alert alert-success mt-3">
+        {% for message in messages %}
+            <div>{{ message }}</div>
+        {% endfor %}
+    </div>
+{% endif %}
+<br>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID del Pedido</th>
+                <th>Fecha</th>
+                <th>Total</th>
+                <th>Proveedor</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for pedido in pedidos %}
+            <tr>
+                <td>{{ pedido.id }}</td>
+                <td>{{ pedido.fecha_solicitud }}</td>
+                <td>{{ pedido.total }}</td>
+                <td>{{ pedido.proveedor}}</td>
+                <td>
+     <!--aca quiero un link que me lleve a la descripcion de cada pedido, es decir detalle pedido-->
+                <!-- Botón para ver detalles -->
+                <a href="/pedido/pedido/{{ pedido.id }}/" class="btn btn-primary">Ver detalles</a> -
+                <a href="/pedido/{{ pedido.id }}/editar" class="btn bg-faded">Editar</a> -
+              <!--    <a href="{% url 'pedido:detalles_pedido' pedido.id %}" class="btn btn-info">Ver detalles</a>
+                <a class="btn bg-danger" href="{% url 'pedido:eliminar_pedido' pedido.id %}">Eliminar</a></td>
+                <a href="{% url 'pedido:eliminar_pedido' pedido_id=pedido.id %}" class="btn btn-danger" onclick="return confirmarEliminacion()">Eliminar</a>-->
+                <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarEliminacionModal" data-id="{{ pedido.id }}">Eliminar</a>
+                </td>
+            </tr>
+
+            <!-- Modal de confirmación -->
+            <div class="modal fade" id="confirmarEliminacionModal" tabindex="-1" aria-labelledby="confirmarEliminacionModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="confirmarEliminacionModalLabel">Confirmación de Eliminación</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            ¿Estás seguro de que deseas eliminar este pedido? Esta acción no se puede deshacer.
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <a id="confirmarEliminacionBtn" href="#" class="btn btn-danger">Eliminar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+{% block funcionesjs %}
+    <script>
+        function confirmarEliminacion() {
+            return confirm("¿Estás seguro de que deseas eliminar este pedido?");
+        }
+    </script>
+    <script>
+        // Detectar cuando se abre el modal y establecer el enlace
+        var modal = document.getElementById('confirmarEliminacionModal');
+        modal.addEventListener('show.bs.modal', function (event) {
+            var button = event.relatedTarget;  // Botón que activó el modal
+            var pedidoId = button.getAttribute('data-id');  // Obtener el ID del pedido
+
+            // Actualizar el enlace en el botón de confirmación
+            var eliminarBtn = document.getElementById('confirmarEliminacionBtn');
+            eliminarBtn.href = `/pedido/${pedidoId}/eliminar/`;
+        });
+    </script>
+{% endblock %}

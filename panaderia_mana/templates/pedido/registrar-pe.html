@@ -1,0 +1,145 @@
+<!-- registrar_pedido.html -->
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Pedido</title>
+    <style>
+        /* Agrega tus estilos o utiliza un archivo CSS externo */
+    </style>
+</head>
+<body>
+    <h2>Registro de Pedido</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ pedido_form.as_p }}
+        <h3>Detalles del Pedido</h3>
+        <table>
+            {{ detalle_formset.management_form }}
+            {% for form in detalle_formset %}
+                <tr>
+                    <td>{{ form.insumo }}</td>
+                    <td>{{ form.cantidad }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        <button type="button" onclick="agregarFila()">Agregar Insumo</button>
+        <br><br>
+        <button type="submit">Registrar Pedido</button>
+    </form>
+    <script>
+        function agregarFila() {
+            // Código JavaScript para agregar una nueva fila al formset
+        }
+    </script>
+</body>
+</html>
+
+<!--
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Pedido</title>
+    <style>
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid black;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <h2>Registro de Pedido</h2>
+    <form method="POST">
+        {% csrf_token %}
+        {{ pedido_form.as_p }}
+        <h3>Detalles del Pedido</h3>
+
+         Campos para agregar insumo y cantidad
+        <div>
+            <label for="insumo">Insumo:</label>
+            <select id="insumo">
+                <option value="">Seleccione un insumo</option>
+                {% for insumo in insumos %}
+                    <option value="{{ insumo.id }}">{{ insumo.nombre }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" min="1">
+            <button type="button" onclick="agregarInsumo()">Agregar Insumo</button>
+        </div>
+
+      Tabla para mostrar los insumos agregados
+        <table>
+            <thead>
+                <tr>
+                    <th>Insumo</th>
+                    <th>Cantidad</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="detallesTabla">
+           Las filas se agregarán dinámicamente aquí
+            </tbody>
+        </table>
+
+        <br><br>
+        <button type="submit">Registrar Pedido</button>
+    </form>
+
+    <script>
+        function agregarInsumo() {
+            // Obtener los valores de los campos de insumo y cantidad
+            const insumoSelect = document.getElementById('insumo');
+            const insumoText = insumoSelect.options[insumoSelect.selectedIndex].text;
+            const insumoId = insumoSelect.value;
+            const cantidad = document.getElementById('cantidad').value;
+
+            if (!insumoId || !cantidad) {
+                alert('Por favor, seleccione un insumo y una cantidad válida.');
+                return;
+            }
+
+            // Crear una nueva fila en la tabla
+            const nuevaFila = document.createElement('tr');
+            nuevaFila.innerHTML = `
+                <td>
+                    <input type="hidden" name="insumo_id[]" value="${insumoId}">
+                    ${insumoText}
+                </td>
+                <td>
+                    <input type="hidden" name="cantidad[]" value="${cantidad}">
+                    ${cantidad}
+                </td>
+                <td>
+                    <button type="button" onclick="eliminarFila(this)">Eliminar</button>
+                </td>
+            `;
+
+            // Agregar la nueva fila a la tabla
+            document.getElementById('detallesTabla').appendChild(nuevaFila);
+
+            // Limpiar los campos de insumo y cantidad
+            insumoSelect.value = '';
+            document.getElementById('cantidad').value = '';
+        }
+
+        function eliminarFila(boton) {
+            // Eliminar la fila correspondiente
+            const fila = boton.closest('tr');
+            fila.remove();
+        }
+    </script>
+</body>
+</html>
+
+-->
