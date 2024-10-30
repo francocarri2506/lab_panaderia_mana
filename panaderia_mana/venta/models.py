@@ -16,7 +16,8 @@ class Producto(models.Model):
         "PAN": "PANIFICACION",
         "PAS": "PASTELERIA"
     })
-    imagen = models.FileField(default='default_image.jpg')
+    #imagen = models.FileField(default='default_image.jpg')
+    imagen = models.FileField()
 
     def venta(self, cantidadVendida):
         if cantidadVendida <= self.cantidadDisponible:

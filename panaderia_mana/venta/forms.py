@@ -9,7 +9,7 @@ from .models import Item
 class ProductoForm(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ['nombre', 'descripcion', 'precio', 'cantidadDisponible', 'unidadMedida', 'tipo']
+        fields = ['nombre', 'descripcion', 'precio', 'cantidadDisponible', 'unidadMedida', 'tipo','imagen',]
         widgets = {
             'nombre': forms.TextInput(attrs={'class': 'form-control', 'required': True}),
             'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
@@ -17,10 +17,8 @@ class ProductoForm(forms.ModelForm):
             'cantidadDisponible': forms.NumberInput(attrs={'class': 'form-control','required': True}),
             'unidadMedida': forms.Select(attrs={'class': 'form-select','required': True}),
             'tipo': forms.Select(attrs={'class': 'form-select','required': True}),
-            'imagen': forms.ClearableFileInput(),
+            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control bg-faded', 'aria-describedby': 'basic-addon7'}),
         }
-
-
 
 class ClienteMayoristaForm(forms.ModelForm):
     class Meta:

@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Productos
+{% endblock %}
+
+{% block titulo %}
+    Lista de Productos
+{% endblock %}
+
+{% block content %}
+{% load static %}
+
+<div class="container mx-auto mt-5">
+    <h2 class="text-center text-2xl font-bold mb-4">Reportes</h2>
+
+    {% if user.is_authenticated %}
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-3 gap-4">
+
+            <!-- Listado de insumo faltante es decir que tengamos menos que la cantidad minima-->
+            <a href="{% url 'insumos_faltantes_pdf' %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{% static 'img/insumos.png' %}" alt="Materia Prima Faltante" class="w-full h-48 object-cover">
+                <h5 class="text-center p-2 font-semibold">Insumos Faltantes</h5>
+            </a>
+            <!-- Listado de insumo que mas se piden a un productor-->
+            <a href="{% url 'pedido:informes/insumos-mas-pedidos/pdf/ %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{% static 'img/insumos.png' %}" alt="Insumos mas pedidos" class="w-full h-48 object-cover">
+                <h5 class="text-center p-2 font-semibold">Insumos mas Pedidos</h5>
+            </a>
+
+        </div>
+    {% else %}
+        <p class="text-center text-red-500">Debes iniciar sesión para ver los reportes.</p>
+    {% endif %}
+</div>
+
+{% endblock %}

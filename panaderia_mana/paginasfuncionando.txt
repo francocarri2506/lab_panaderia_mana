@@ -18,3 +18,14 @@ http://127.0.0.1:8000/insumos/lista/
 para ver detalles de un pedido: en este caso el pedido7
 
 http://127.0.0.1:8000/pedido/pedido/7/
+
+
+para ver los informes:
+
+http://127.0.0.1:8000/pedido/lista-reportes/
+
+
+http://127.0.0.1:8000/pedido/informes/insumos-mas-pedidos/pdf/
+
+informe de insumos faltantes
+http://127.0.0.1:8000/insumos/informes/insumos-faltantes/pdf/

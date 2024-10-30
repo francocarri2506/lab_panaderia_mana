@@ -44,6 +44,9 @@
                             <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="/">INICIO</a></li>
                             <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'lista_insumos' %}">Gestión de Insumos</a></li>
                             <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'lista_productos' %}">Gestión de Productos</a></li>
+                             {% if user.is_authenticated %}
+                                <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" >Gestión de REPORTES</a></li>
+                            {% endif %}
                             <li class="nav-item px-lg-4"><a class="nav-link text-uppercase" href="{% url 'lista_ventas' %}">Ventas</a></li>
                         </ul>
                         <span class="navbar-text ms-auto">
