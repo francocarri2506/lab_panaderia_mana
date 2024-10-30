@@ -35,5 +35,32 @@
             {% endfor %}
         </tbody>
     </table>
-<p><strong>Total:</strong> {{ pedido.total }}</p>
+    <p><strong>Total:</strong> {{ pedido.total }}</p>
+
+    <!-- Funcionalidad solo para usuario registrado -->
+    <div class="container mt-5 text-center">
+        <a href="/pedido/" class="btn btn-primary">Regresar</a>
+        <a href="/pedido/{{ pedido.id }}/editar" class="btn bg-faded">Editar</a>
+        <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarEliminacionModal">Eliminar</a>
+    </div>
+
+    <!-- Modal de Confirmación de Eliminación -->
+    <div class="modal fade" id="confirmarEliminacionModal" tabindex="-1" aria-labelledby="confirmarEliminacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarEliminacionModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar este pedido? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="{% url 'pedido:eliminar_pedido' pedido.id %}" class="btn btn-danger">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
 {% endblock %}

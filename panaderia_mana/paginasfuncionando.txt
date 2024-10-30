@@ -13,7 +13,7 @@ http://127.0.0.1:8000/insumos/lista/
 
 
 <!--<a href="{% url 'detalles_pedido' pedido.id %}" class="btn btn-primary">Ver detalles</a>--
-
+<a href="/pedido/pedido/{{ pedido.id }}/" class="btn btn-primary">Ver detalles</a>
 
 para ver detalles de un pedido: en este caso el pedido7
 

@@ -33,8 +33,8 @@ def registrar_pedido(request):
                     cantidad=cantidad,
                     precio_total=insumo.precio_unitario * int(cantidad)
                 )
-            return redirect('pedido_exitoso')
-        # return redirect('listar_pedidos')
+            #return redirect('pedido_exitoso')
+            return redirect('pedido:listar_pedidos')
     else:
         pedido_form = PedidoForm()
 
@@ -69,10 +69,10 @@ def eliminar_pedido(request, pedido_id):
     pedido.delete()
     messages.success(request, 'Pedido eliminado correctamente.')
     # Redirigir a la lista de pedidos
-    return redirect('pedido/listar_pedidos.html')
+    return redirect('pedido:listar_pedidos')
 
 
-def editar_pedido(request, pedido_id):
+"""def editar_pedido(request, pedido_id):
     # Obtener el pedido y sus detalles
     pedido = get_object_or_404(Pedido, id=pedido_id)
     detalles = DetallePedido.objects.filter(pedido=pedido)
@@ -94,5 +94,47 @@ def editar_pedido(request, pedido_id):
         'pedido_form': pedido_form,
         'detalle_formset': detalle_formset,
         'pedido': pedido
+    }
+    return render(request, 'pedido/editar_pedido.html', context)"""
+
+
+def editar_pedido(request, pedido_id):
+    # Obtener el pedido y sus detalles
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+    detalles = DetallePedido.objects.filter(pedido=pedido)
+
+    if request.method == 'POST':
+        pedido_form = PedidoForm(request.POST, instance=pedido)
+
+        if pedido_form.is_valid():
+            pedido = pedido_form.save()
+
+            # Eliminar detalles previos para reemplazarlos con los nuevos
+            detalles.delete()
+
+            # Procesar los nuevos detalles del pedido
+            insumo_ids = request.POST.getlist('insumo_id[]')
+            cantidades = request.POST.getlist('cantidad[]')
+
+            for insumo_id, cantidad in zip(insumo_ids, cantidades):
+                insumo = Insumo.objects.get(id=insumo_id)
+                DetallePedido.objects.create(
+                    pedido=pedido,
+                    insumo=insumo,
+                    cantidad=cantidad,
+                    precio_total=insumo.precio_unitario * int(cantidad)
+                )
+
+            messages.success(request, 'Pedido actualizado correctamente.')
+            return redirect('pedido:listar_pedidos')
+    else:
+        pedido_form = PedidoForm(instance=pedido)
+
+    insumos = Insumo.objects.all()
+    context = {
+        'pedido_form': pedido_form,
+        'detalles': detalles,
+        'pedido': pedido,
+        'insumos': insumos,
     }
     return render(request, 'pedido/editar_pedido.html', context)

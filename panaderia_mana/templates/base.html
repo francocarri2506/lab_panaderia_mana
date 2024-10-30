@@ -66,6 +66,24 @@
                 </div>
             </section>
             <main>
+                <!-- Modal de Confirmación para Eliminar Insumo -->
+                <div class="modal fade" id="eliminarModal" tabindex="-1" aria-labelledby="eliminarModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eliminarModalLabel">Confirmar Eliminación</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de que deseas eliminar este insumo del pedido?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                                <button type="button" class="btn btn-danger" id="confirmarEliminar">Eliminar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
             </main>
 
