@@ -27,9 +27,9 @@ urlpatterns = [
     path('', views.pagina_inicio, name='pagina_inicio'),  # Ruta para la página de inicio
     #path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
     #path('', include('apps.usuario.urls', namespace='usuario')),
-    path('productos/', include('producto.urls')),
-    path('empleado/', include('empleado.urls')),
-    path('cliente/', include('cliente.urls')),
+    #path('productos/', include('producto.urls')),
+    #path('empleado/', include('empleado.urls')),
+    #path('cliente/', include('cliente.urls')),
     path('usuario/', include('apps.usuario.urls')),
     #path('pedidos/', include('pedido.urls')),
     path('pedido/', include('pedido.urls', namespace='pedido')),
@@ -39,7 +39,7 @@ urlpatterns = [
                   # path('', views.index, name='index'),  # Ruta para la página de inicio
     # path('registro-pedidos/', views.registro_pedidos, name='registro_pedidos'),  # Ruta para Registro de Pedidos
     #path('gestion-producto/', views.gestion_producto, name='gestion_producto'),  # Ruta para Gestión de Productos
-    #path('ventas/', views.ventas, name='ventas'),  # Ruta para Ventas
+    path('venta/', include('venta.urls')), # Ruta para Ventas
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
