@@ -11,7 +11,9 @@ class UsuarioAdmin(UserAdmin):
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('documento_identidad', 'domicilio')}),
     )
-    add_fieldsets = UserAdmin.add_fieldsets + (
-        (None, {'fields': ('documento_identidad', 'domicilio')}),
+    add_fieldsets = (
+        (None, {'classes': ('wide',),
+                'fields': ('documento_identidad', 'domicilio','email', 'first_name', 'last_name', 'password1', 'password2')}),
     )
     search_fields = ('email', 'documento_identidad', 'username',)
+
