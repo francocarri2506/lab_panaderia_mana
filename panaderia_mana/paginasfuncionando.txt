@@ -25,7 +25,15 @@ para ver los informes:
 http://127.0.0.1:8000/pedido/lista-reportes/
 
 
-http://127.0.0.1:8000/pedido/informes/insumos-mas-pedidos/pdf/
+http://127.0.0.1:8000/pedido/insumos-mas-pedidos/pdf/
 
 informe de insumos faltantes
 http://127.0.0.1:8000/insumos/informes/insumos-faltantes/pdf/
+
+ventas:
+
+http://127.0.0.1:8000/venta/informe-ventas/pdf/
+
+http://127.0.0.1:8000/venta/productos-mas-vendidos/pdf/
+http://127.0.0.1:8000/venta/empleados-mas-ventas/pdf/
+http://127.0.0.1:8000/venta/informe-ventas-diarias/pdf

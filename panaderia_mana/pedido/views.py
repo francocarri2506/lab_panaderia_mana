@@ -150,19 +150,32 @@ def lista_reportes(request):
 
 #1. Vista para Insumos Más Pedidos en PDF
 
+from django.shortcuts import render
 from django.http import HttpResponse
-from reportlab.pdfgen import canvas
 from django.db.models import Sum
+from io import BytesIO
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
 from .models import DetallePedido
 
-
 def insumos_mas_pedidos_pdf(request):
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = 'attachment; filename="insumos_mas_pedidos.pdf"'
 
-    p = canvas.Canvas(response)
-    p.drawString(100, 750, "Insumos Más Pedidos")
-    y = 730
+    # Configurar la respuesta para ver el PDF en el navegador
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="insumos_mas_pedidos.pdf"'  # 'inline' para mostrar primero y luego recien descargarlo
+
+    # Crear el archivo PDF
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    p.setTitle("Informe de Insumos Más Pedidos")
+
+    # Título del documento
+    p.drawString(100, 800, "Panadería El Maná")
+    p.drawString(100, 780, "Informe de Insumos Más Pedidos")
+
+    # Encabezados de la tabla
+    p.drawString(100, 750, "Nombre del Insumo")
+    p.drawString(300, 750, "Total Pedido")
 
     # Consultamos los insumos más pedidos
     insumos_mas_pedidos = (DetallePedido.objects
@@ -170,10 +183,19 @@ def insumos_mas_pedidos_pdf(request):
                            .annotate(total_pedido=Sum('cantidad'))
                            .order_by('-total_pedido'))
 
+    # Agregar datos a la tabla
+    y = 730  # Coordenada vertical inicial para los datos
     for insumo in insumos_mas_pedidos:
-        p.drawString(100, y, f"Insumo: {insumo['insumo__nombre']}, Total Pedido: {insumo['total_pedido']}")
+        p.drawString(100, y, insumo['insumo__nombre'])
+        p.drawString(300, y, str(insumo['total_pedido']))
         y -= 20
 
+    # Finalizar y guardar el PDF
     p.showPage()
     p.save()
+
+    # Obtener contenido del PDF y escribirlo en la respuesta
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
     return response

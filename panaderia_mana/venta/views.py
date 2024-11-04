@@ -1,3 +1,4 @@
+
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
@@ -230,3 +231,177 @@ def eliminar_item(request, item_id):
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     return render(request, 'producto/detalle_producto.html', {'producto': producto})
+
+
+from django.shortcuts import render
+from django.http import HttpResponse
+from django.db.models import Sum, F, Count
+from .models import Venta, Item, Producto
+from reportlab.pdfgen import canvas
+from reportlab.lib.pagesizes import A4
+from io import BytesIO
+
+
+def informe_ventas_pdf(request, tipo=None, fecha_inicio=None, fecha_fin=None):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="informe_ventas.pdf"'
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+
+    # Título del informe
+    p.drawString(100, 800, "Listado de Ventas")
+    y = 780
+
+    # Aplicar filtros de rango de fechas y tipo de producto
+    ventas = Venta.objects.all()
+
+    # Filtrar por rango de fechas si se proporcionan
+    if fecha_inicio and fecha_fin:
+        ventas = ventas.filter(fechaVenta__range=[fecha_inicio, fecha_fin])
+
+    # Filtrar por tipo de producto si se proporciona
+    if tipo:
+        ventas = ventas.filter(item__prod__tipo=tipo)
+
+    # Iterar sobre las ventas para mostrar cada venta y sus productos
+    if ventas.exists():
+        for venta in ventas:
+            items = Item.objects.filter(venta=venta)
+
+            # Mostrar detalles de la venta
+            p.drawString(100, y, f"Fecha de Venta: {venta.fechaVenta} - Monto Total: {venta.montoTotal}")
+            y -= 20
+
+            # Mostrar cada producto vendido en la venta
+            for item in items:
+                p.drawString(120, y,
+                             f"Producto: {item.prod.nombre}, Cantidad: {item.cantidad}, Subtotal: {item.subTotal}")
+                y -= 20
+
+            y -= 10  # Espacio extra después de cada venta
+
+            # Crear una nueva página si la longitud se pasa del límite
+            if y < 50:
+                p.showPage()
+                y = 800
+    else:
+        p.drawString(100, y, "No se encontraron ventas para los filtros aplicados.")
+
+    # Guardar y devolver el PDF
+    p.showPage()
+    p.save()
+    response.write(buffer.getvalue())
+    buffer.close()
+    return response
+
+#3. Listado de Empleados con Más Ventas
+
+def empleados_mas_ventas_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="empleados_mas_ventas.pdf"'
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    p.drawString(100, 800, "Empleados con Más Ventas")
+
+    empleados_mas_ventas = (Venta.objects
+                            .values('empleadoVenta__nombreCompleto')
+                            .annotate(total_ventas=Count('id'))
+                            .order_by('-total_ventas'))
+
+    y = 780
+    for empleado in empleados_mas_ventas:
+        p.drawString(100, y, f"Empleado: {empleado['empleadoVenta__nombreCompleto']}, Total Ventas: {empleado['total_ventas']}")
+        y -= 20
+
+    p.showPage()
+    p.save()
+    response.write(buffer.getvalue())
+    buffer.close()
+    return response
+
+#2. Listado de los Productos Más Vendidos
+
+from django.db.models import Sum
+
+def productos_mas_vendidos_pdf(request):
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="productos_mas_vendidos.pdf"'
+
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    p.drawString(100, 800, "Productos Más Vendidos")
+
+    productos_mas_vendidos = (Item.objects
+                              .values('prod__nombre')
+                              .annotate(total_vendido=Sum('cantidad'))
+                              .order_by('-total_vendido'))
+
+    y = 780
+    for producto in productos_mas_vendidos:
+        p.drawString(100, y, f"Producto: {producto['prod__nombre']}, Cantidad Vendida: {producto['total_vendido']}")
+        y -= 20
+
+    p.showPage()
+    p.save()
+    response.write(buffer.getvalue())
+    buffer.close()
+    return response
+
+
+
+from django.utils import timezone
+
+def ventas_diarias_pdf(request):
+    # Configurar la respuesta para ver el PDF en el navegador
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = 'inline; filename="ventas_diarias.pdf"'
+
+    # Crear el archivo PDF
+    buffer = BytesIO()
+    p = canvas.Canvas(buffer, pagesize=A4)
+    p.setTitle("Informe de Ventas Diarias")
+
+    # Título del documento
+    p.drawString(100, 800, "Panadería El Maná")
+    p.drawString(100, 780, "Informe de Ventas del Día")
+
+    # Encabezados de la tabla
+    p.drawString(100, 750, "Producto")
+    p.drawString(300, 750, "Cantidad Vendida")
+    p.drawString(400, 750, "Subtotal")
+
+    # Filtramos las ventas del día actual en la zona horaria local
+    today = timezone.localdate()
+    ventas_hoy = Venta.objects.filter(fechaVenta=today)
+
+    # Verificar si hay ventas hoy
+    if ventas_hoy.exists():
+        y = 730  # Coordenada vertical inicial para los datos
+        total_dia = 0  # Para acumular el total del día
+
+        # Iterar a través de las ventas y sus items
+        for venta in ventas_hoy:
+            items = Item.objects.filter(venta=venta)
+            for item in items:
+                p.drawString(100, y, item.prod.nombre)  # Nombre del producto
+                p.drawString(300, y, str(item.cantidad))  # Cantidad vendida
+                p.drawString(400, y, f"${item.subTotal:.2f}")  # Subtotal
+                total_dia += item.subTotal  # Sumar al total del día
+                y -= 20
+
+        # Mostrar el total del día
+        p.drawString(100, y - 10, f"Total del Día: ${total_dia:.2f}")
+    else:
+        p.drawString(100, 730, "No se registraron ventas para el día de hoy.")
+
+    # Finalizar y guardar el PDF
+    p.showPage()
+    p.save()
+
+    # Obtener contenido del PDF y escribirlo en la respuesta
+    pdf = buffer.getvalue()
+    buffer.close()
+    response.write(pdf)
+    return response

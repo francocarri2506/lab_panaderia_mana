@@ -17,4 +17,11 @@ urlpatterns = [
     path('registrar_venta', views.registrar_venta, name='registrar_venta'),
     path('eliminar_venta/<int:venta_id>/', views.eliminar_venta, name='eliminar_venta'),
     #path('nueva_venta', views.AgregarItem.as_view(), name='nueva_venta'),
+
+
+    path('informe-ventas/pdf/', views.informe_ventas_pdf, name='informe_ventas_pdf'),
+    path('productos-mas-vendidos/pdf/', views.productos_mas_vendidos_pdf, name='productos_mas_vendidos_pdf'),
+    path('empleados-mas-ventas/pdf/', views.empleados_mas_ventas_pdf, name='empleados_mas_ventas_pdf'),
+    path('informe-ventas-diarias/pdf', views.ventas_diarias_pdf, name='informe_ventas_diarias'),
+
 ]

@@ -1,0 +1,9 @@
+en base en gestion reportes agregar la url:
+href="{% url 'lista_reportes' %}" no me funciona
+http://127.0.0.1:8000/pedido/lista-reportes/
+
+
+y en lista de reportes
+ en el segundo cuadro que valla a la url de insumos_mas_pedidos_pdf que no me estaria funcionando tampoco
+
+ http://127.0.0.1:8000/pedido/insumos-mas-pedidos/pdf/

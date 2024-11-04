@@ -23,11 +23,31 @@
                 <h5 class="text-center p-2 font-semibold">Insumos Faltantes</h5>
             </a>
             <!-- Listado de insumo que mas se piden a un productor-->
-            <a href="{% url 'pedido:informes/insumos-mas-pedidos/pdf/ %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+            <a href="{% url 'pedido:insumos_mas_pedidos_pdf' %}" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
                 <img src="{% static 'img/insumos.png' %}" alt="Insumos mas pedidos" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Insumos mas Pedidos</h5>
             </a>
 
+            <!-- Listado de ventas todas-->
+            <a href="{% url 'informe_ventas_pdf' %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{% static 'img/ventas.webp' %}" alt="Insumos mas pedidos" class="w-full h-48 object-cover">
+                <h5 class="text-center p-2 font-semibold">Ventas Totales</h5>
+            </a>
+            <!-- Listado de productos mas vendidos-->
+            <a href="{% url 'productos_mas_vendidos_pdf' %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{% static 'img/productos.jpg' %}" alt="Insumos mas pedidos" class="w-full h-48 object-cover">
+                <h5 class="text-center p-2 font-semibold">Productos mas vendidos</h5>
+            </a>
+            <!-- Listado de empleados con mas ventas-->
+            <a href="{% url 'empleados_mas_ventas_pdf' %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{% static 'img/empleados.png' %}" alt="Insumos mas pedidos" class="w-full h-48 object-cover">
+                <h5 class="text-center p-2 font-semibold">Empleados con mas ventas</h5>
+            </a>
+            <!-- ventas diaras-->
+            <a href="{% url 'informe_ventas_diarias' %}"  class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+                <img src="{% static 'img/ventas.webp' %}" alt="Insumos mas pedidos" class="w-full h-48 object-cover">
+                <h5 class="text-center p-2 font-semibold">Ventas del Dia</h5>
+            </a>
         </div>
     {% else %}
         <p class="text-center text-red-500">Debes iniciar sesión para ver los reportes.</p>
@@ -35,3 +55,11 @@
 </div>
 
 {% endblock %}
+
+<!--
+            http://127.0.0.1:8000/venta/informe-ventas/pdf/
+
+http://127.0.0.1:8000/venta/productos-mas-vendidos/pdf/
+http://127.0.0.1:8000/venta/empleados-mas-ventas/pdf/
+http://127.0.0.1:8000/venta/informe-ventas-diarias/pdf
+-->
