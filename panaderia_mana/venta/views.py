@@ -63,7 +63,7 @@ def editar_producto(request, producto_id):
     return render(request, 'producto/editar_producto.html', {'form': form, 'producto': producto})
 
 @login_required(login_url='usuario:login')
-@permission_required('venta_delete_producto',raise_exception=True)
+@permission_required('venta.delete_producto',raise_exception=True)
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     producto.delete()

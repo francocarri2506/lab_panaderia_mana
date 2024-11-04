@@ -33,6 +33,7 @@ urlpatterns = [
     path('usuario/', include('apps.usuario.urls')),
     #path('pedidos/', include('pedido.urls')),
     path('pedido/', include('pedido.urls', namespace='pedido')),
+    path('proveedor/', include('proveedor.urls')),
 
 
 

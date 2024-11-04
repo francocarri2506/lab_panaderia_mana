@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Lista de Proveedores
+{% endblock %}
+
+{% block titulo %}
+    Lista de Proveedores
+{% endblock %}
+
+{% block content %}
+    <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Nombre</th>
+                    <th>Telefono</th>
+                    <th>Email</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for proveedor in proveedores %}
+                    <tr>
+                        <td>{{ proveedor.nombreCompleto }}</td>
+                        <td>{{ proveedor.telefono }}</td>
+                        <td>{{ proveedor.email }}</td>
+                        <td><a class="btn bg-primary" href="{% url 'editar_proveedor' proveedor.id %}">Editar</a> - <a class="btn bg-danger" href="{% url 'eliminar_proveedor' proveedor.id %}">Eliminar</a></td>
+
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td colspan="2">No hay Proveedores disponibles.</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    <a class="btn bg-primary" href="{% url 'agregar_proveedor' %}">Registar un Proveedor</a>
+{% endblock %}
