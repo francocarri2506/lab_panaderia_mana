@@ -89,9 +89,9 @@
             });
 
             document.getElementById("submit").addEventListener("click", function(event){
-                let contenido = document.getElementById("detallesTabla");
-                if(contenido.firstChild){
+                
 
+                if(document.getElementsByTagName("td").length==0){
                     event.preventDefault();
                     alert("La lista de Items esta vacía");
                 }
