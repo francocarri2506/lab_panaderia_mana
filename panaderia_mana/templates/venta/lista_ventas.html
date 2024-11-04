@@ -10,31 +10,66 @@
 
 {% block content %}
     <table class="table table-striped">
-            <thead>
+        <thead>
+            <tr>
+                <th>Número Venta</th>
+                <th>Fecha</th>
+                <th>Monto Total</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
                 <tr>
-                    <th>Numero Venta</th>
-                    <th>Fecha</th>
-                    <th>Monto Total</th>
-                    <th>Acciones</th>
+                    <td>{{ venta.id }}</td>
+                    <td>{{ venta.fechaVenta }}</td>
+                    <td>{{ venta.montoTotal }}</td>
+                    <td>
+                        <!-- Botón de eliminar que abre el modal -->
+                        <a class="btn bg-danger" href="#" data-bs-toggle="modal" data-bs-target="#confirmarEliminacionModal" data-id="{{ venta.id }}">Eliminar</a>
+                    </td>
                 </tr>
-            </thead>
-            <tbody>
-                {% for venta in ventas %}
-                    <tr>
-                        <td>{{ venta.id }}</td>
-                        <td>{{ venta.fechaVenta }}</td>
-                        <td>{{ venta.montoTotal }}</td>
-                        <td>
+            {% empty %}
+                <tr>
+                    <td colspan="4">No hay Ventas Cargadas.</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a class="btn bg-primary" href="{% url 'registrar_venta' %}">Registrar Nueva Venta</a>
 
-                          <a class="btn bg-danger" href="{% url 'eliminar_venta' venta.id %}">Eliminar</a></td>
+    <!-- Modal de Confirmación de Eliminación -->
+    <div class="modal fade" id="confirmarEliminacionModal" tabindex="-1" aria-labelledby="confirmarEliminacionModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="confirmarEliminacionModalLabel">Confirmar Eliminación</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                <div class="modal-body">
+                    ¿Estás seguro de que deseas eliminar esta venta? Esta acción no se puede deshacer.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <a href="#" class="btn btn-danger" id="btnEliminar">Eliminar</a>
+                </div>
+            </div>
+        </div>
+    </div>
 
-                    </tr>
-                {% empty %}
-                    <tr>
-                        <td colspan="2">No hay Ventas Cargadas.</td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-        <a class="btn bg-primary" href="{% url 'registrar_venta' %}">Registar Nueva Venta</a>
+{% endblock %}
+
+{% block funcionesjs %}
+    <script>
+        // Obtener el botón de eliminar del modal
+        const btnEliminar = document.getElementById('btnEliminar');
+
+        // Añadir un listener para abrir el modal
+        document.querySelectorAll('[data-bs-target="#confirmarEliminacionModal"]').forEach(btn => {
+            btn.addEventListener('click', function() {
+                const ventaId = this.getAttribute('data-id');
+                btnEliminar.setAttribute('href', `/venta/eliminar_venta/${ventaId}`);
+            });
+        });
+    </script>
 {% endblock %}

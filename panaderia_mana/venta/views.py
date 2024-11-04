@@ -16,7 +16,7 @@ from empleado.models import Empleado
 
 items = []
 
-# Create your views here.
+
 def lista_productos(request):
     productos = Producto.objects.all()
     return  render(request, 'producto/lista_productos.html', {'productos': productos})
