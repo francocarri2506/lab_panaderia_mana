@@ -59,3 +59,16 @@ class PedidoForm(forms.ModelForm):
 """
 # Formulario para los detalles del pedido
 DetallePedidoFormSet = modelformset_factory(DetallePedido, fields=('insumo', 'cantidad'), extra=0)
+
+
+from django import forms
+from .models import RecepcionPedido
+
+class RecepcionPedidoForm(forms.ModelForm):
+    class Meta:
+        model = RecepcionPedido
+        fields = ['observaciones']
+        widgets = {
+            'observaciones': forms.Textarea(
+                attrs={'class': 'form-control bg-faded', 'rows': 3, 'aria-describedby': 'basic-addon2'}),
+        }

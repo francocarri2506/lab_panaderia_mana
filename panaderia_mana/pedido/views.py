@@ -202,3 +202,52 @@ def insumos_mas_pedidos_pdf(request):
     buffer.close()
     response.write(pdf)
     return response
+
+
+#                       RECEPCION PEDIDO
+
+
+from django.shortcuts import get_object_or_404, redirect, render
+from django.contrib.auth.decorators import login_required
+from django.utils import timezone
+from .models import Pedido, RecepcionPedido, Insumo
+from .forms import RecepcionPedidoForm  # Crear un formulario para la recepción
+
+from empleado.models import Empleado
+@login_required
+def recibir_pedido(request, pedido_id):
+    pedido = get_object_or_404(Pedido, id=pedido_id)
+
+    # Verificar si el pedido ya fue recibido
+    if hasattr(pedido, 'recepcion'):
+        # Redirigir si ya se ha recibido este pedido
+        #return redirect('pedido:detalle_pedido', pedido_id=pedido.id)
+        return redirect('pedido:listar_pedidos')
+
+
+
+    if request.method == 'POST':
+        recepcion_form = RecepcionPedidoForm(request.POST)
+
+        if recepcion_form.is_valid():
+            recepcion = recepcion_form.save(commit=False)
+            recepcion.pedido = pedido
+            recepcion.empleado = Empleado.objects.get(usuario=request.user)
+            recepcion.fecha_recepcion = timezone.now()
+            recepcion.save()
+
+            # Actualizar el stock de cada insumo utilizando el método aumentar_stock
+            for detalle in pedido.detalles.all():
+                detalle.insumo.aumentar_stock(detalle.cantidad)
+
+            #return redirect('pedido:detalle_pedido', pedido_id=pedido.id) no me estaria funcioanndo esta url
+            return redirect('pedido:listar_pedidos')
+    else:
+        recepcion_form = RecepcionPedidoForm()
+
+    context = {
+        'pedido': pedido,
+        'detalles': pedido.detalles.all(),
+        'recepcion_form': recepcion_form,
+    }
+    return render(request, 'pedido/recibir_pedido.html', context)

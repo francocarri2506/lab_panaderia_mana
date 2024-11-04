@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Recepción de Pedido
+{% endblock %}
+
+{% block titulo %}
+    Recepción de Pedido N°{{ pedido.id }}
+{% endblock %}
+
+{% block content %}
+
+    <p><strong>Proveedor:</strong> {{ pedido.proveedor }}</p>
+    <p><strong>Fecha:</strong> {{ pedido.fecha_solicitud }}</p>
+    <p><strong>Observaciones:</strong> {{ pedido.observaciones }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <!-- Formulario de Recepción -->
+        <div class="mb-4">
+            {{ recepcion_form.as_p }}
+        </div>
+
+        <h2>Detalles del Pedido</h2>
+
+        <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Insumo</th>
+                <th>Cantidad</th>
+                <th>Precio Unitario</th>
+                <th>Precio Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for detalle in detalles %}
+            <tr>
+                <td>{{ detalle.insumo.nombre }}</td>
+                <td>{{ detalle.cantidad }}</td>
+                <td>{{ detalle.insumo.precio_unitario }}</td>
+                <td>{{ detalle.precio_total }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+        <!-- Botón de Confirmación -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-success">Confirmar Recepción</button>
+            <a href="/pedido/" class="btn btn-primary">Regresar</a>
+        </div>
+    </form>
+{% endblock %}
+

@@ -42,6 +42,14 @@
         <a href="/pedido/" class="btn btn-primary">Regresar</a>
         <a href="/pedido/{{ pedido.id }}/editar" class="btn bg-faded">Editar</a>
         <a href="#" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmarEliminacionModal">Eliminar</a>
+
+        <!-- Enlace para recibir el pedido solo si aún no se ha recibido -->
+        {% if not pedido.recepcion %}
+            <a href="{% url 'pedido:recibir_pedido' pedido.id %}" class="btn btn-success">Recibir Pedido</a>
+        {% else %}
+        <p class="text-end"><strong>Pedido recibido el:</strong> {{ pedido.recepcion.fecha_recepcion }}</p>
+        <p class="text-end"><strong>Por el empleado: </strong>{{ pedido.recepcion.empleado.nombreCompleto |upper}}</p>
+        {% endif %}
     </div>
 
     <!-- Modal de Confirmación de Eliminación -->

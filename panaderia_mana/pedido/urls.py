@@ -26,4 +26,7 @@ urlpatterns = [
     path('insumos-mas-pedidos/pdf/', views.insumos_mas_pedidos_pdf, name='insumos_mas_pedidos_pdf'),
 
     path('lista-reportes/', views.lista_reportes, name='lista_reportes'),
+
+
+    path('recibir/<int:pedido_id>/', views.recibir_pedido, name='recibir_pedido'),
 ]

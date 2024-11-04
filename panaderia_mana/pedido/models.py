@@ -6,6 +6,7 @@ from proveedor.models import Proveedor
 from django.db.models import Sum
 
 
+
 """
 class Pedido(models.Model):
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, related_name='pedidos')
@@ -62,37 +63,21 @@ class DetallePedido(models.Model):
         return f'{self.cantidad} de {self.insumo.nombre}'
 
 
-#esto es lo que estoy haciendo ahora
-"""
-from django.db import models
-from django.utils import timezone
-from .models import Insumo, Empleado  # Asegúrate de que Insumo esté en la misma app o importarlo correctamente
 
 
-class ItemRecepcion(models.Model):
-    nombre = models.CharField(max_length=100)
-    cantidad = models.IntegerField()
-    precio = models.DecimalField(max_digits=10, decimal_places=2)
+##############RECEPCION PEDIDO#####################
 
-    def __str__(self):
-        return f'{self.nombre} - {self.cantidad} unidades'
+
+#from django.contrib.auth.models import User
+#from panaderia_mana.empleado.admin import Empleado
+from empleado.models import Empleado
 
 
 class RecepcionPedido(models.Model):
-    pedido = models.ForeignKey(Pedido, on_delete=models.CASCADE, related_name='recepciones')
-    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE)
-    fecha_recepcion = models.DateTimeField(default=timezone.now)
-    conformidad = models.BooleanField()
+    pedido = models.OneToOneField(Pedido, on_delete=models.CASCADE, related_name='recepcion')
+    empleado = models.ForeignKey(Empleado, on_delete=models.CASCADE, default=1)
+    fecha_recepcion = models.DateField(auto_now_add=True)
     observaciones = models.TextField(blank=True, null=True)
-    items = models.ManyToManyField(ItemRecepcion, related_name='recepciones')
 
     def __str__(self):
-        return f'Recepción del Pedido {self.pedido.numero_pedido}'
-
-    def incrementar_stock_insumos(self):
-        for item in self.items.all():
-            insumo = Insumo.objects.get(nombre=item.nombre)
-            insumo.stock_actual += item.cantidad
-            insumo.save()
-
-"""
+        return f'Recepción de Pedido {self.pedido.numero_pedido}'
