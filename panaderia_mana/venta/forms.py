@@ -17,7 +17,7 @@ class ProductoForm(forms.ModelForm):
             'cantidadDisponible': forms.NumberInput(attrs={'class': 'form-control','required': True}),
             'unidadMedida': forms.Select(attrs={'class': 'form-select','required': True}),
             'tipo': forms.Select(attrs={'class': 'form-select','required': True}),
-            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control bg-faded', 'aria-describedby': 'basic-addon7'}),
+            'imagen': forms.ClearableFileInput(attrs={'class': 'form-control bg-faded', 'aria-describedby': 'basic-addon7', 'required': True}),
         }
 
 class ClienteMayoristaForm(forms.ModelForm):

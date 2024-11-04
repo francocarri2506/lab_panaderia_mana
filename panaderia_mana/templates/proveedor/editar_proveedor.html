@@ -2,11 +2,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Editar Producto
+    Editar Proveedor
 {% endblock %}
 
 {% block titulo %}
-    Editar: {{ producto.nombre }}
+    Editar: {{ proveedor.nombreCompleto }}
 {% endblock %}
 
 {% block content %}
@@ -16,7 +16,7 @@
         <div class="mb-1 container text-center">
 
             <input type="submit" value="Guardar Cambios" class="btn bg-primary">
-            <a class="btn bg-danger" href="{% url 'lista_proveedores' %}">Cancelar</a>
+            <a class="btn bg-danger" href="{% url 'lista_productos' %}">Cancelar</a>
         </div>
     </form>
 {% endblock %}

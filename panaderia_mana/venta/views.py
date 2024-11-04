@@ -1,7 +1,7 @@
 
 from django.shortcuts import render, redirect, get_object_or_404
 from django.views.generic import FormView
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib import messages
 
 from .forms import ProductoForm, ItemForm, ItemFormSet
@@ -64,6 +64,7 @@ def editar_producto(request, producto_id):
     return render(request, 'producto/editar_producto.html', {'form': form, 'producto': producto})
 
 @login_required(login_url='usuario:login')
+@permission_required('venta.delete_producto',raise_exception=True)
 def eliminar_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     producto.delete()
@@ -101,6 +102,7 @@ def editar_cliente(request, cliente_id):
     return render(request, 'cliente/editar_cliente.html', {'form': form, 'cliente': cliente})
 
 @login_required(login_url='usuario:login')
+@permission_required('venta.delete_clienteMayorista',raise_exception=True)
 def eliminar_cliente(request, cliente_id):
     cliente = get_object_or_404(ClienteMayorista, id=cliente_id)
     cliente.delete()
@@ -197,6 +199,7 @@ def registrar_venta(request):
     return render(request, 'venta/registrar_venta.html', {'form': form})"""
 
 @login_required(login_url='usuario:login')
+@permission_required('venta.delete_venta',raise_exception=True)
 def eliminar_venta(request, venta_id):
     venta = get_object_or_404(Venta, id=venta_id)
     venta.delete()

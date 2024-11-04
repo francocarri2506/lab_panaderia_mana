@@ -84,14 +84,14 @@
                     opcion.removeAttribute("disabled");
                 }else{
                     opcion.removeAttribute("required");
-                    opcion.setAttribute("disabled", "")
+                    opcion.setAttribute("disabled", "");
                 }
             });
 
             document.getElementById("submit").addEventListener("click", function(event){
+                
 
-                if(document.getElementById("td").length==0){
-
+                if(document.getElementsByTagName("td").length==0){
                     event.preventDefault();
                     alert("La lista de Items esta vacía");
                 }

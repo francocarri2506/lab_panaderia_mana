@@ -35,6 +35,7 @@ urlpatterns = [
     #path('pedido/', include('pedido.urls', namespace='pedido')),
     #path('pedido/', include('pedido.urls')),
     path('pedido/', include('pedido.urls', namespace='pedido')),
+    path('proveedor/', include('proveedor.urls')),
 
 
 

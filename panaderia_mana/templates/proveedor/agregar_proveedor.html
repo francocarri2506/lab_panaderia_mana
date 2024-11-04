@@ -2,11 +2,11 @@
 {% extends 'base.html' %}
 
 {% block title %}
-    Editar Producto
+    Proveedor
 {% endblock %}
 
 {% block titulo %}
-    Editar: {{ producto.nombre }}
+    Registrar Proveedor
 {% endblock %}
 
 {% block content %}
@@ -14,9 +14,8 @@
         {% csrf_token %}
         {{ form.as_p }}
         <div class="mb-1 container text-center">
-
-            <input type="submit" value="Guardar Cambios" class="btn bg-primary">
-            <a class="btn bg-danger" href="{% url 'lista_proveedores' %}">Cancelar</a>
+            <input type="reset" value="Cancelar" class="btn bg-danger">
+            <input type="submit" value="Registrar" class="btn bg-primary">
         </div>
     </form>
 {% endblock %}
