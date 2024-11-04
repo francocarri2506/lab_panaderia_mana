@@ -5,7 +5,8 @@ from django.urls import reverse
 
 from .models import Usuario
 from .forms import UsuarioForm
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
+
 
 # Create your views here.
 def login_view(request):
@@ -28,6 +29,7 @@ def logout_view(request):
 
 
 @login_required(login_url='usuario:login')
+@permission_required('usuario.view_ususario',raise_exception=True)
 def listar_usuarios(request):
     usuarios = Usuario.objects.all()
     return render(request, 'usuario/listar_usuarios.html', {'usuarios': usuarios})

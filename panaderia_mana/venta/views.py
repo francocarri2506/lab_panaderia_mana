@@ -90,6 +90,7 @@ def crear_cliente(request):
     return render(request, 'cliente/crear_cliente.html', {'form': form})
 
 @login_required(login_url='usuario:login')
+@permission_required('venta.change_clienteMayorista',raise_exception=True)
 def editar_cliente(request, cliente_id):
     cliente = get_object_or_404(ClienteMayorista, id=cliente_id)
     if request.method == 'POST':
@@ -230,7 +231,7 @@ def eliminar_item(request, item_id):
     item.delete()
 
 
-
+@login_required(login_url='usuario:login')
 def detalle_producto(request, producto_id):
     producto = get_object_or_404(Producto, id=producto_id)
     return render(request, 'producto/detalle_producto.html', {'producto': producto})
@@ -244,7 +245,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from io import BytesIO
 
-
+@login_required(login_url='usuario:login')
 def informe_ventas_pdf(request, tipo=None, fecha_inicio=None, fecha_fin=None):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="informe_ventas.pdf"'
@@ -299,7 +300,7 @@ def informe_ventas_pdf(request, tipo=None, fecha_inicio=None, fecha_fin=None):
     return response
 
 #3. Listado de Empleados con Más Ventas
-
+@login_required(login_url='usuario:login')
 def empleados_mas_ventas_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="empleados_mas_ventas.pdf"'
@@ -327,7 +328,7 @@ def empleados_mas_ventas_pdf(request):
 #2. Listado de los Productos Más Vendidos
 
 from django.db.models import Sum
-
+@login_required(login_url='usuario:login')
 def productos_mas_vendidos_pdf(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'inline; filename="productos_mas_vendidos.pdf"'
@@ -355,7 +356,7 @@ def productos_mas_vendidos_pdf(request):
 
 
 from django.utils import timezone
-
+@login_required(login_url='usuario:login')
 def ventas_diarias_pdf(request):
     # Configurar la respuesta para ver el PDF en el navegador
     response = HttpResponse(content_type='application/pdf')

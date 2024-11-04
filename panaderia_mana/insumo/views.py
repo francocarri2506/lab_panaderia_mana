@@ -1,11 +1,14 @@
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Insumo
 from .forms import InsumoForm
 
+@login_required(login_url='usuario:login')
 def lista_insumos(request):
     insumos = Insumo.objects.all()  # Obtén los insumos desde la base de datos
     return render(request, 'insumo/lista_insumos.html', {'insumos': insumos})
 
+@login_required(login_url='usuario:login')
 def agregar_insumo(request):
     if request.method == 'POST':
         form = InsumoForm(request.POST)
@@ -16,7 +19,7 @@ def agregar_insumo(request):
         form = InsumoForm()
     return render(request, 'insumo/agregar_insumos.html', {'form': form})
 
-
+@login_required(login_url='usuario:login')
 def editar_insumo(request, insumo_id):
     insumo = get_object_or_404(Insumo, id=insumo_id)
     if request.method == 'POST':
@@ -32,7 +35,8 @@ def editar_insumo(request, insumo_id):
 
 
 
-
+@login_required(login_url='usuario:login')
+@permission_required('insumo.delete_insumo',raise_exception=True)
 def eliminar_insumo(request, insumo_id):
     insumo = get_object_or_404(Insumo, id=insumo_id)
     insumo.delete()
@@ -52,6 +56,7 @@ from io import BytesIO
 from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 
+@login_required(login_url='usuario:login')
 def insumos_faltantes_pdf(request):
     # Obtén los insumos faltantes (donde la cantidad disponible es menor que la cantidad mínima)
     insumos_faltantes = Insumo.objects.filter(cantidad_disponible__lt=F('cantidad_minima'))

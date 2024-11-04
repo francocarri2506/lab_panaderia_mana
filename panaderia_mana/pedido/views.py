@@ -1,4 +1,4 @@
-
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Pedido, DetallePedido, Insumo
 from .forms import PedidoForm
@@ -7,6 +7,7 @@ from django.shortcuts import redirect
 from django.contrib import messages
 from .forms import PedidoForm, DetallePedidoFormSet
 
+@login_required(login_url='usuario:login')
 def listar_pedidos(request):
     # Obtener todos los pedidos
     pedidos = Pedido.objects.all()
@@ -14,7 +15,7 @@ def listar_pedidos(request):
         'pedidos': pedidos
     }
     return render(request, 'pedido/listar_pedidos.html', context)
-
+@login_required(login_url='usuario:login')
 def registrar_pedido(request):
     if request.method == 'POST':
         pedido_form = PedidoForm(request.POST)
@@ -46,7 +47,7 @@ def registrar_pedido(request):
     #return render(request, 'registrar_pedido.html', context)
     return render(request, 'pedido/registrar_pedido.html', context)
 
-
+@login_required(login_url='usuario:login')
 def detalles_pedido(request, pedido_id):
     # Obtener el pedido por su ID
     pedido = get_object_or_404(Pedido, id=pedido_id)
@@ -63,6 +64,7 @@ def detalles_pedido(request, pedido_id):
     pedido = get_object_or_404(Pedido, id=pedido_id)
     return render(request, 'pedido/detalles_pedido.html', {'pedido': pedido})
 """
+@login_required(login_url='usuario:login')
 def eliminar_pedido(request, pedido_id):
     # Obtener el pedido por su ID y eliminarlo
     pedido = get_object_or_404(Pedido, id=pedido_id)
@@ -97,7 +99,7 @@ def eliminar_pedido(request, pedido_id):
     }
     return render(request, 'pedido/editar_pedido.html', context)"""
 
-
+@login_required(login_url='usuario:login')
 def editar_pedido(request, pedido_id):
     # Obtener el pedido y sus detalles
     pedido = get_object_or_404(Pedido, id=pedido_id)
@@ -143,7 +145,7 @@ def editar_pedido(request, pedido_id):
 
 #reportes
 
-
+@login_required(login_url='usuario:login')
 def lista_reportes(request):
     return render(request, 'pedido/lista_reportes.html')
 
@@ -158,6 +160,7 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.pagesizes import A4
 from .models import DetallePedido
 
+@login_required(login_url='usuario:login')
 def insumos_mas_pedidos_pdf(request):
 
     # Configurar la respuesta para ver el PDF en el navegador
