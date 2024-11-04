@@ -15,6 +15,7 @@ def listar_pedidos(request):
         'pedidos': pedidos
     }
     return render(request, 'pedido/listar_pedidos.html', context)
+
 @login_required(login_url='usuario:login')
 def registrar_pedido(request):
     if request.method == 'POST':
@@ -38,7 +39,6 @@ def registrar_pedido(request):
             return redirect('pedido:listar_pedidos')
     else:
         pedido_form = PedidoForm()
-
     insumos = Insumo.objects.all()
     context = {
         'pedido_form': pedido_form,

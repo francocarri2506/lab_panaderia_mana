@@ -28,7 +28,7 @@ urlpatterns = [
     #path('', TemplateView.as_view(template_name='base/home.html'), name='home'),
     #path('', include('apps.usuario.urls', namespace='usuario')),
     #path('productos/', include('producto.urls')),
-    #path('empleado/', include('empleado.urls')),
+    path('empleado/', include('empleado.urls')),
     #path('cliente/', include('cliente.urls')),
     path('usuario/', include('apps.usuario.urls')),
     #path('pedidos/', include('pedido.urls')),

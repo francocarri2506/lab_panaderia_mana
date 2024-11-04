@@ -29,7 +29,7 @@
                 <img src="{% static 'img/clientes.jpeg' %}" alt="Gestión de Clientes" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Gestión de Clientes</h5>
             </a>
-            <a href="" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+            <a href="pedido/ " class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
                 <img src="{% static 'img/pedidos.jpeg' %}" alt="Gestión de Pedidos" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Gestión de Pedidos</h5>
             </a>
@@ -38,19 +38,19 @@
                 <h5 class="text-center p-2 font-semibold">Gestión de Insumos</h5>
             </a>
 
-            <a href="gestionar_ventas.html" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+            <a href="venta/lista_ventas" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
                 <img src="{% static 'img/ventas.webp' %}" alt="Gestión de Ventas" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Gestión de Ventas</h5>
             </a>
-            <a href="gestionar_pedidos_recibidos.html" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+            <a href="pedido/ " class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
                 <img src="{% static 'img/pedidos.jpeg' %}" alt="Gestión de Pedidos Recibidos" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Gestión de Pedidos Recibidos</h5>
             </a>
-            <a href="gestionar_proveedores.html" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+            <a href="/proveedor/lista_proveedores" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
                 <img src="{% static 'img/proveedores.jpeg' %}" alt="Gestión de Proveedores" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Gestión de Proveedores</h5>
             </a>
-            <a href="gestionar_informes.html" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
+            <a href="{% url 'pedido:lista_reportes' %}" class="link-image block bg-white rounded-lg shadow-lg overflow-hidden">
                 <img src="{% static 'img/informes.jpg' %}" alt="Gestión de Informes" class="w-full h-48 object-cover">
                 <h5 class="text-center p-2 font-semibold">Gestión de Informes</h5>
             </a>

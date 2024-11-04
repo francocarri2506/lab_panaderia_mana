@@ -11,7 +11,7 @@ def listar_empleados(request):
     return render(request, 'empleado/listar_empleados.html', {'empleados': empleados})
 
 @login_required(login_url='usuario:login')
-@permission_required('empleado.add_empleado',raise_exception=true)
+@permission_required('empleado.add_empleado',raise_exception=True)
 def crear_empleado(request):
     if request.method == 'POST':
         form = EmpleadoForm(request.POST)

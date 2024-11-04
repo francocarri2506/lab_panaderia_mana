@@ -45,7 +45,7 @@ def eliminar_insumo(request, insumo_id):
 
 
 def pagina_inicio(request):
-    return render(request, 'inicio.html')  # Renderiza la plantilla 'inicio.html'
+    return render(request, 'inicio_empleado.html')  # Renderiza la plantilla 'inicio.html'
 
 
 from django.shortcuts import render
