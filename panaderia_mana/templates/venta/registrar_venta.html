@@ -59,15 +59,17 @@
             document.getElementById("cantidad").addEventListener("change",function(){
                 let cant = document.getElementById("cantidad");
                 let prod = document.getElementById("producto");
-                const ids = [];
-                const canti = [];
+                let ids = [];
+                let canti = [];
                 {% for producto in productos %}
                     ids.push("{{ producto.id }}");
-                    canti.push("{{ producto.cantidadDisponible }}")
+                    canti.push("{{ producto.cantidadDisponible }}");
                 {% endfor %}
                 for(i = 0; i<ids.length;i++){
                     if(prod.value==ids[i]){
-                        if(cant.value>canti[i]){
+                        if(Number(cant.value)>Number(canti[i])){
+                            console.log(cant.value);
+                            console.log(canti[i]);
                             alert("No hay tanto producto disponible");
                             cant.value= "";
                             cant.setAttribute("placeholder", "Disponible: "+canti[i]);

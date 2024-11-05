@@ -31,9 +31,8 @@ from .models import Pedido, DetallePedido
 class PedidoForm(forms.ModelForm):
     class Meta:
         model = Pedido
-        fields = ['numero_pedido', 'proveedor', 'fecha_solicitud', 'observaciones']
+        fields = [ 'proveedor', 'fecha_solicitud', 'observaciones']
         widgets = {
-            'numero_pedido': forms.NumberInput(attrs={'class': 'form-control'}),
             'proveedor': forms.Select(attrs={'class': 'form-control'}),
             'fecha_solicitud': forms.DateInput(attrs={'class': 'form-control', 'type': 'date'}),
             'observaciones': forms.Textarea(attrs={'class': 'form-control bg-faded', 'rows': 3, 'aria-describedby': 'basic-addon2'}),

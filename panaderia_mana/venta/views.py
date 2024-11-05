@@ -148,7 +148,7 @@ def registrar_venta(request):
 
 
 
-            messages.success(request, 'Venta registrada exitosamente.')
+
             return redirect('lista_ventas')
     else:
         venta_form = VentaForm()

@@ -40,7 +40,6 @@ class Insumo(models.Model):
 """
 
 class Pedido(models.Model):
-    numero_pedido = models.IntegerField()
     proveedor = models.ForeignKey(Proveedor, on_delete=models.CASCADE, default=1)
     fecha_solicitud = models.DateField()
     observaciones = models.TextField(blank=True, null=True)
